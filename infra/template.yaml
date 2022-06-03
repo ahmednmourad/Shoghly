@@ -1,76 +1,112 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
-  DBUsername:
-    NoEcho: 'true'
-    Description: Username for MySQL database access
+  DbName:
+    Default: shoghly
+    Description: The database name
     Type: String
     MinLength: '1'
-    MaxLength: '16'
+    MaxLength: '64'
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
-  DBPassword:
-    NoEcho: 'true'
-    Description: Password MySQL database access
-    Type: String
-    MinLength: '8'
-    MaxLength: '41'
-    AllowedPattern: '[a-zA-Z0-9]*'
-    ConstraintDescription: must contain only alphanumeric characters.
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters.
+  DbUsername:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: db-username
+  DbPassword:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: db-password
+  EmailUser:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: email-user
+  EmailPassword:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: email-password
+  JwtSecretKey:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: jwt-secret-key
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
-  VPCName:
+  VpcId:
     Type: String
+Mappings:
+  RegionMap:
+    eu-central-1:
+      AMI: ami-09439f09c55136ecf
 Resources:
   Rds:
-    Type: 'AWS::RDS::DBInstance'
+    Type: AWS::RDS::DBInstance
     Properties:
-      DBInstanceIdentifier: shoghly
+      DBInstanceIdentifier: !Ref DbName
       DBName: shoghly
       DBInstanceClass: db.t2.micro
       AllocatedStorage: 20
       Engine: MySQL
       EngineVersion: 8.0.16
-      MasterUsername: !Ref DBUsername
-      MasterUserPassword: !Ref DBPassword
-      DBSecurityGroups: 
+      MasterUsername: !Ref DbUsername
+      MasterUserPassword: !Ref DbPassword
+      VPCSecurityGroups: 
         - !Ref RdsSecurityGroup
+
+  RdsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VpcId
+      GroupDescription: Enable access via MySQL port 3306
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
 
   Ec2:
     Type: AWS::EC2::Instance
     Properties: 
-      ImageId: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+      IamInstanceProfile: !Ref Ec2InstanceProfile
+      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AMI ]
       KeyName: !Ref KeyName
       InstanceType: t2.micro
-      SecurityGroups:
-       - !Ref Ec2SecurityGroup
+      SecurityGroupIds:
+        - !Ref Ec2SecurityGroup
       UserData:
         Fn::Base64: 
           !Sub |
             #!/bin/bash
-            sudo yum update -y
-            sudo yum install -g pm2
-            sudo yum install -y gcc-c++ make
-            curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
-            sudo yum install -y nodejs
-            sudo yum install -y git
-            git clone https://github.com/mohamedelshamy9/shoghly.git
-            cd ./shoghly
-            touch .env
-            sudo npm install
-            sudo pm2 start index.js --watch
 
-  S3:
-    Type: 'AWS::S3::Bucket'
-    DeletionPolicy: Retain
-    Properties:
-      BucketName: shoghly-s3
+            sudo yum update -y
+
+            sudo yum install -g pm2
+
+            sudo yum install -y gcc-c++ make
+            curl --silent --location https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+            sudo yum install -y nodejs
+
+            sudo yum install -y git
+            git clone https://github.com/ahmednmourad/shoghly.git
+
+
+            cat > /etc/profile.d/load_env.sh << 'EOF'
+            export DB_NAME=${DbName}
+            export DB_HOSTNAME=${Rds.Endpoint.Address}
+            export DB_USERNAME=${DbUsername}
+            export DB_PASSWORD=${DbPassword}
+
+            export EMAIL_USER=${EmailUser}
+            export EMAIL_PASS=${EmailPassword}
+
+            export JWT_SECRET_KEY=${JwtSecretKey}
+
+            EOF
+            chmod a+x /etc/profile.d/load_env.sh
+  
+            cd ./shoghly
+            sudo npm install
+            # sudo pm2 start index.js --watch
 
   Ec2SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      VpcId: !Ref VPCName
+      VpcId: !Ref VpcId
       GroupDescription: Enable SSH access via port 22
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -82,16 +118,32 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
 
-  RdsSecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
+  Ec2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
     Properties:
-      VpcId: !Ref VPCName
-      GroupDescription: Enable access via MySQL port 3306
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          CidrIp: 0.0.0.0/0
+      Path: /
+      Roles:
+        - !Ref Ec2S3Role
+
+  Ec2S3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: s3-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 's3:*'
+                Resource: '*'
 
 Outputs:
   DbEndpoint:

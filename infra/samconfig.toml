@@ -1,0 +1,13 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "shoghly"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-ivj7e5epwk5p"
+s3_prefix = "shoghly"
+region = "eu-central-1"
+profile = "ahmednmourad"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "DbName=\"shoghly\" DbUsername=\"db-username\" DbPassword=\"db-password\" EmailUser=\"email-user\" EmailPassword=\"email-password\" JwtSecretKey=\"jwt-secret-key\" KeyName=\"shoghly\" VpcId=\"vpc-0678ce4bb75315bae\""
+image_repositories = []
