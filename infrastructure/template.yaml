@@ -80,26 +80,19 @@ Resources:
             sudo yum install -y nodejs
 
             sudo yum install -y git
-            git clone https://github.com/ahmednmourad/shoghly.git
+            sudo git clone https://github.com/ahmednmourad/shoghly.git
 
-            cat > /etc/profile.d/load_env.sh << 'EOF'
-            export DB_NAME=${DbName}
-            export DB_HOSTNAME=${Rds.Endpoint.Address}
-            export DB_USERNAME=${DbUsername}
-            export DB_PASSWORD=${DbPassword}
+            echo export DB_NAME=${DbName} | sudo tee -a /etc/profile
+            echo export DB_HOSTNAME=${Rds.Endpoint.Address} | sudo tee -a /etc/profile
+            echo export DB_USERNAME=${DbUsername} | sudo tee -a /etc/profile
+            echo export DB_PASSWORD=${DbPassword} | sudo tee -a /etc/profile
+            echo export EMAIL_USER=${EmailUser} | sudo tee -a /etc/profile
+            echo export JWT_SECRET_KEY=${JwtSecretKey} | sudo tee -a /etc/profile
 
-            export EMAIL_USER=${EmailUser}
-            export EMAIL_PASS=${EmailPassword}
-
-            export JWT_SECRET_KEY=${JwtSecretKey}
-
-            EOF
-            chmod a+x /etc/profile.d/load_env.sh
-
-            cd ./shoghly
+            cd ./shoghly/backend
             npm install
 
-            sudo yum install -g pm2
+            sudo npm install pm2 -g
             sudo pm2 start index.js --watch
 
   Ec2SecurityGroup:
