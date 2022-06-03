@@ -1,0 +1,44 @@
+{
+    "name": "final-project",
+    "version": "1.0.0",
+    "description": "Final Project with ELSHAMY",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js",
+        "local": "cross-env NODE_ENV=local nodemon index.js",
+        "dev": "cross-env NODE_ENV=dev nodemon index.js"
+    },
+    "type": "module",
+    "author": "mo Elshamy",
+    "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.1120.0",
+        "bcrypt": "^5.0.1",
+        "body-parser": "^1.19.1",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "joi": "^17.5.0",
+        "jsonwebtoken": "^8.5.1",
+        "jwt-decode": "^3.1.2",
+        "multer": "^1.4.4",
+        "multer-s3": "^2.10.0",
+        "mysql2": "^2.3.3",
+        "nodemailer": "^6.7.2",
+        "sequelize": "^6.12.0-beta.2",
+        "uuid": "^8.3.2",
+        "winston": "^3.3.3"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.17.8",
+        "@babel/eslint-parser": "^7.17.0",
+        "cross-env": "^7.0.3",
+        "eslint": "^7.32.0",
+        "eslint-config-standard": "^16.0.3",
+        "eslint-plugin-import": "^2.25.3",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^5.2.0",
+        "nodemon": "^2.0.15"
+    }
+}

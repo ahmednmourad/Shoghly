@@ -1,0 +1,373 @@
+openapi: 3.0.1
+info:
+    title: Ivory
+    contact:
+        email: mohamedelshamypts30@gmail.com
+    version: 1.0.0
+servers:
+    - url: https://c1fzfviv22.execute-api.us-east-1.amazonaws.com/dev/
+    - url: http://localhost:8080
+paths:
+    /signup:
+        post:
+            tags:
+                - Authentication
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Signup"
+                required: true
+            responses:
+                "201":
+                    description: Created
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /signin:
+        post:
+            tags:
+                - Authentication
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Signin"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /upload:
+        post:
+            summary: Upload photo(s)
+            security:
+                - bearerAuth: []
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                photos:
+                                    type: array
+                                    items:
+                                        type: string
+                                        format: binary
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /forgotPassword:
+        post:
+            tags:
+                - Authentication
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/forgotPassword"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /resetPassword/{token}:
+        post:
+            tags:
+                - Authentication
+            parameters:
+                - in: path
+                  name: token
+                  schema:
+                      type: string
+                  required: true
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/resetPassword"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /profile/{userId}:
+        get:
+            summary: Get a user profile
+            tags:
+                - Profile
+            parameters:
+                - in: path
+                  name: userId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /profile:
+        put:
+            summary: Update a user profile
+            tags:
+                - Profile
+            security:
+                - bearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/updateProfile"
+            responses:
+                "201":
+                    description: Created
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+    /review/{workerId}:
+        post:
+            summary: Create a review
+            tags:
+                - Review
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: workerId
+                  schema:
+                      type: string
+                  required: true
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/review"
+            responses:
+                "201":
+                    description: OK, Created
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+    /review/{reviewId}:
+        get:
+            summary: get a review
+            tags:
+                - Review
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: reviewId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+
+        put:
+            summary: Edit a review
+            tags:
+                - Review
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: reviewId
+                  schema:
+                      type: string
+                  required: true
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/review"
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+        delete:
+            summary: Delete a review
+            tags:
+                - Review
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: reviewId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error   
+    /reviews/{workerId}:
+        get:
+            summary: get all worker reviews
+            tags:
+                - Review
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: workerId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        Signup:
+            type: object
+            required:
+                - firstName
+                - lastName
+                - email
+                - password
+                - phone
+                - country
+                - city
+                - role
+            properties:
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                email:
+                    type: string
+                    format: email
+                password:
+                    type: string
+                gender:
+                    type: string
+                role:
+                    type: string
+                profession:
+                    type: string
+                phone:
+                    type: string
+                photo:
+                    type: string
+                country:
+                    type: string
+                city:
+                    type: string
+                line:
+                    type: string
+        Signin:
+            type: object
+            required:
+                - email
+                - password
+            properties:
+                email:
+                    type: string
+                    format: email
+                password:
+                    type: string
+                    format: password
+        forgotPassword:
+            type: object
+            required:
+                - email
+            properties:
+                email:
+                    type: string
+                    format: email
+        resetPassword:
+            type: object
+            required:
+                - password
+            properties:
+                password:
+                    type: string
+                    format: password
+        updateProfile:
+            type: object
+            required:
+                - firstName
+                - lastName
+                - phone
+                - gender
+                - country
+                - city
+                - line
+            properties:
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                phone:
+                    type: string
+                gender:
+                    type: string
+                country:
+                    type: string
+                city:
+                    type: string
+                line:
+                    type: string
+        review:
+            type: object
+            required:
+                - rating
+            properties:
+                rating:
+                    type: integer
+                description:
+                    type: string
