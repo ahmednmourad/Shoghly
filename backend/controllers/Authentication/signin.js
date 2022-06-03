@@ -19,7 +19,7 @@ export default async (req, res, next) => {
     const isValidPassword = await comparePassword(password, user.password)
     if (!isValidPassword) throw new CustomError(400, "incorrect email or password")
 
-    const accessToken = jwt.sign({ email, userId: user.userId }, process.env.TOKEN_KEY, { expiresIn: "365d" })
+    const accessToken = jwt.sign({ email, userId: user.userId }, process.env.JWT_SECRET_KEY, { expiresIn: "365d" })
 
     return res.status(200).json({ message: "logged in successfully", accessToken, userId: user.userId })
   } catch (err) {

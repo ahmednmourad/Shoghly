@@ -75,15 +75,12 @@ Resources:
 
             sudo yum update -y
 
-            sudo yum install -g pm2
-
             sudo yum install -y gcc-c++ make
-            curl --silent --location https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+            curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
             sudo yum install -y nodejs
 
             sudo yum install -y git
             git clone https://github.com/ahmednmourad/shoghly.git
-
 
             cat > /etc/profile.d/load_env.sh << 'EOF'
             export DB_NAME=${DbName}
@@ -98,10 +95,12 @@ Resources:
 
             EOF
             chmod a+x /etc/profile.d/load_env.sh
-  
+
             cd ./shoghly
-            sudo npm install
-            # sudo pm2 start index.js --watch
+            npm install
+
+            sudo yum install -g pm2
+            sudo pm2 start index.js --watch
 
   Ec2SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'

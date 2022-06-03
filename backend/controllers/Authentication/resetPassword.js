@@ -1,14 +1,15 @@
 import connection from "../../util/mysql.js"
 import { encryptPassword } from "../../util/passwords.js"
-import jwtDecode from "jwt-decode"
 
 export default async (req, res, next) => {
   try {
     const token = req.params.token
-    const decoded = await jwtDecode(token)
-    const userId = decoded.userId
     const newPassword = req.body.password
     const hashedPass = await encryptPassword(newPassword)
+  
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    if (!decodedToken) return res.status(401).json({ message: "Not authenticated, No authorization header" })
+    const userId = decoded.userId
 
     await connection.query("UPDATE user SET password = ? WHERE userId = ?", [hashedPass, userId])
     console.log("Password changed successfully!")

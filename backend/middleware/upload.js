@@ -1,4 +1,4 @@
-import aws from "aws-sdk"
+import { S3Client } from "@aws-sdk/client-s3";
 import multer from "multer"
 import multerS3 from "multer-s3"
 import { v4 as uuidv4 } from "uuid"
@@ -6,7 +6,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const s3 = new aws.S3()
+const s3 = new S3Client();
 const MAXIMUM_NUMBER_OF_FILES = 25
 
 export default (req, res, next) => {

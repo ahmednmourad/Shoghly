@@ -8,7 +8,7 @@ export default (req, res, next) => {
   const token = authHeader.split(" ")[1]
 
   try {
-    const decodedToken = jwt.verify(token, process.env.TOKEN_KEY)
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
     if (!decodedToken) return res.status(401).json({ message: "Not authenticated, No authorization header" })
     req.userId = decodedToken.userId
   } catch (err) {

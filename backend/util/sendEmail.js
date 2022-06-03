@@ -11,10 +11,7 @@ dotenv.config()
 const sendEmail = async (email, subject, text) => {
   try {
     const transporter = createTransport({
-      host: process.env.EMAIL_HOST,
-      service: process.env.EMAIL_SERVICE,
-      port: 587,
-      secure: true,
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
