@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -17,4 +17,4 @@ jobs:
           host: ${{ secrets.EC2_PUBLIC_DNS_NAME }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: cd shoghly/ && git pull
+          script: cd shoghly/backend && git pull
