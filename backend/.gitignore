@@ -1,11 +1,4 @@
-# Created by https://www.toptal.com/developers/gitignore/api/osx,node,linux,windows,sam
-# Edit at https://www.toptal.com/developers/gitignore?templates=osx,node,linux,windows,sam
-
-# vscode settings
 .vscode
-
-### Linux ###
-*~
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*

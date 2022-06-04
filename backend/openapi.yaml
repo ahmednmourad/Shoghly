@@ -145,7 +145,7 @@ paths:
                     description: Unauthorized access
                 "500":
                     description: Internal server error
-    /review/{workerId}:
+    /workers/{workerId}/reviews:
         post:
             summary: Create a review
             tags:
@@ -172,7 +172,28 @@ paths:
                     description: Unauthorized access
                 "500":
                     description: Internal server error
-    /review/{reviewId}:
+        get:
+            summary: get all worker reviews
+            tags:
+                - Review
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: workerId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+    /reviews/{reviewId}:
         get:
             summary: get a review
             tags:
@@ -242,28 +263,6 @@ paths:
                     description: Unauthorized access
                 "500":
                     description: Internal server error   
-    /reviews/{workerId}:
-        get:
-            summary: get all worker reviews
-            tags:
-                - Review
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: workerId
-                  schema:
-                      type: string
-                  required: true
-            responses:
-                "200":
-                    description: OK
-                "400":
-                    description: Bad request
-                "401":
-                    description: Unauthorized access
-                "500":
-                    description: Internal server error
 
 components:
     securitySchemes:

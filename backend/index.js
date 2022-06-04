@@ -22,8 +22,6 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors({ credentials: true, origin: "*" }))
 
-console.log(process.env)
-
 app.use(authentication)
 app.use(upload)
 app.use(profile)

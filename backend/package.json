@@ -13,7 +13,7 @@
     "author": "mo Elshamy",
     "license": "ISC",
     "dependencies": {
-        "@aws-sdk/client-s3": "^3.100.0",
+        "aws-sdk": "^2.1148.0",
         "bcrypt": "^5.0.1",
         "body-parser": "^1.19.1",
         "cors": "^2.8.5",
