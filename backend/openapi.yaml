@@ -5,7 +5,7 @@ info:
         email: mohamedelshamypts30@gmail.com
     version: 1.0.0
 servers:
-    - url: https://c1fzfviv22.execute-api.us-east-1.amazonaws.com/dev/
+    - url: https://cjyzhu7lw2.execute-api.eu-central-1.amazonaws.com/dev
     - url: http://localhost:8080
 paths:
     /signup:
