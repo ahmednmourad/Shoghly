@@ -88,6 +88,8 @@ Resources:
             echo export DB_PASSWORD=${DbPassword} | sudo tee -a /etc/profile
             echo export EMAIL_USER=${EmailUser} | sudo tee -a /etc/profile
             echo export JWT_SECRET_KEY=${JwtSecretKey} | sudo tee -a /etc/profile
+            echo export S3_BUCKET_NAME='shoghly-s3' | sudo tee -a /etc/profile
+            source /etc/profile.d/sdk.sh
 
             cd ./shoghly/backend
             npm install
@@ -96,7 +98,7 @@ Resources:
             sudo pm2 start index.js --watch
 
   Ec2SecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
+    Type: AWS::EC2::SecurityGroup
     Properties:
       VpcId: !Ref VpcId
       GroupDescription: Enable SSH access via port 22
@@ -106,8 +108,12 @@ Resources:
           ToPort: 22
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
           CidrIp: 0.0.0.0/0
 
   Ec2InstanceProfile:
