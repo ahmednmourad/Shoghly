@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
-    title: Ivory
+    title: Shoghly
     contact:
-        email: mohamedelshamypts30@gmail.com
+        email: imohamedelshamy@gmail.com
     version: 1.0.0
 servers:
     - url: https://cjyzhu7lw2.execute-api.eu-central-1.amazonaws.com/dev
@@ -194,28 +194,6 @@ paths:
                 "500":
                     description: Internal server error
     /reviews/{reviewId}:
-        get:
-            summary: get a review
-            tags:
-                - Review
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: reviewId
-                  schema:
-                      type: string
-                  required: true
-            responses:
-                "200":
-                    description: OK
-                "400":
-                    description: Bad request
-                "401":
-                    description: Unauthorized access
-                "500":
-                    description: Internal server error
-
         put:
             summary: Edit a review
             tags:
