@@ -16,7 +16,7 @@ export default async (req, res, next) => {
 
     const clientRole = await getUserRole(clientId)
     const workerRole = await getUserRole(workerId)
-    if (clientRole !== "client" && workerRole !== "worker") throw new CustomError(403, `${clientRole} is not permitted to create review for ${workerRole}`)
+    if (clientRole !== "client" || workerRole !== "worker") throw new CustomError(403, `${clientRole} is not permitted to create review for ${workerRole}`)
 
     await createReview(review)
 
@@ -35,6 +35,6 @@ const createReview = async (review) => {
   try {
     await connection.query("INSERT INTO review SET ?", review)
   } catch (err) {
-    if (err.errcode === 1062) throw new CustomError(429, "Cannot review a worker more than once")
+    if (err.errno === 1062) throw new CustomError(429, "Cannot review a worker more than once")
   }
 }
