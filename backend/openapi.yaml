@@ -69,7 +69,7 @@ paths:
     /forgotPassword:
         post:
             tags:
-                - Authentication
+                - Password
             requestBody:
                 content:
                     application/json:
@@ -86,7 +86,7 @@ paths:
     /resetPassword/{token}:
         post:
             tags:
-                - Authentication
+                - Password
             parameters:
                 - in: path
                   name: token
@@ -106,6 +106,49 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
+    /change-password:
+        post:
+            tags:
+                - Password
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ChangePassword"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+    /verify/email:
+        post:
+            tags:
+                - Verification
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+                                code:
+                                    type: string
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+
     /profile/{userId}:
         get:
             summary: Get a user profile
@@ -347,4 +390,15 @@ components:
                 rating:
                     type: integer
                 description:
+                    type: string
+        ChangePassword:
+            type: object
+            required:
+                - oldPassword
+                - newPassword
+            additionalProperties: false
+            properties:
+                oldPassword:
+                    type: string
+                newPassword:
                     type: string

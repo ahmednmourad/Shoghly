@@ -3,6 +3,7 @@ import cors from "cors"
 import config from "./config.js"
 import sequelize from "./util/sequelize.js"
 import authentication from "./routes/authentication.js"
+import password from "./routes/password.js"
 import profile from "./routes/profile.js"
 import project from "./routes/project.js"
 import upload from "./routes/upload.js"
@@ -23,6 +24,7 @@ app.use(bodyParser.json())
 app.use(cors({ credentials: true, origin: "*" }))
 
 app.use(authentication)
+app.use(password)
 app.use(upload)
 app.use(profile)
 app.use(project)
