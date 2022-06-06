@@ -321,7 +321,7 @@ components:
                     type: string
                 phone:
                     type: string
-                photo:
+                picture:
                     type: string
                 country:
                     type: string

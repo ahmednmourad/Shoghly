@@ -87,6 +87,7 @@ Resources:
             echo export DB_USERNAME=${DbUsername} | sudo tee -a /etc/profile
             echo export DB_PASSWORD=${DbPassword} | sudo tee -a /etc/profile
             echo export EMAIL_USER=${EmailUser} | sudo tee -a /etc/profile
+            echo export EMAIL_PASS=${EmailPassword} | sudo tee -a /etc/profile
             echo export JWT_SECRET_KEY=${JwtSecretKey} | sudo tee -a /etc/profile
             echo export S3_BUCKET_NAME='shoghly-s3' | sudo tee -a /etc/profile
             source /etc/profile.d/sdk.sh

@@ -13,7 +13,7 @@ export default async (req, res, next) => {
     if (!password) throw new CustomError(400, "Password not provided")
     const encryptedPassword = await encryptPassword(password)
     const emailConfirmationCode = generateRandomCode()
-    const emailCodeExpire = new Date(new Date().setHours(new Date().getHours() + 1))
+    const emailCodeExpire = new Date(new Date().setHours(new Date().getHours() + 24))
     console.log(emailConfirmationCode, emailCodeExpire)
 
     const user = {
@@ -34,8 +34,24 @@ export default async (req, res, next) => {
       emailCodeExpire
     }
     await connection.query("INSERT INTO user set ?", user)
-
-    await sendEmail(email, "Shoghly Email Verification", `Your verification code is: ${emailConfirmationCode}`)
+    const html = `
+    <div class="c-email">  
+      <div class="c-email__header">
+        <h1 class="c-email__header__title">Your Verification Code</h1>
+      </div>
+      <div class="c-email__content">
+        <p class="c-email__content__text text-title">
+          Enter this verification code in field:
+        </p>
+        <div class="c-email__code">
+          <span class="c-email__code__text">${emailConfirmationCode}</span>
+        </div>
+        <p class="c-email__content__text text-italic opacity-30 text-title mb-0">Verification code is valid only for 24 hours</p>
+      </div>
+      <div class="c-email__footer"></div>
+    </div>
+    `
+    await sendEmail(email, "Shoghly Email Verification", html)
     return res.status(201).json({ message: "User created", id: userId })
   } catch (err) {
     next(err)

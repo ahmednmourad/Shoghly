@@ -8,7 +8,7 @@ dotenv.config()
  * @param {string} subject - The subject of the email
  * @param {string} text - Email content
  */
-const sendEmail = async (email, subject, text) => {
+const sendEmail = async (email, subject, html) => {
   try {
     const transporter = createTransport({
       service: "gmail",
@@ -22,7 +22,7 @@ const sendEmail = async (email, subject, text) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: subject,
-      text: text
+      html
     })
 
     console.log("email sent successfully")

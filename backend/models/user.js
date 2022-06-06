@@ -8,7 +8,7 @@ export default sequelize.define("user", {
   firstName: { type: Sequelize.STRING, allowNull: false },
   lastName: { type: Sequelize.STRING, allowNull: false },
   gender: { type: Sequelize.STRING },
-  phone: { type: Sequelize.STRING, unique: true },
+  phone: { type: Sequelize.STRING, unique: true, allowNull: false },
   email: { type: Sequelize.STRING, unique: true, allowNull: false },
   password: { type: Sequelize.STRING, allowNull: false },
   country: { type: Sequelize.STRING, allowNull: false },
