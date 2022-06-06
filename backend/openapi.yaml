@@ -180,14 +180,36 @@ paths:
                         schema:
                             $ref: "#/components/schemas/updateProfile"
             responses:
-                "201":
-                    description: Created
+                "200":
+                    description: good
                 "400":
                     description: Bad request
                 "401":
                     description: Unauthorized access
                 "500":
                     description: Internal server error
+    /profile/{userId}/changePicture:
+        post:
+            summary: Change Profile Picture
+            tags:
+                - Profile
+            security:
+                - bearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/changeProfilePicture"                           
+            responses:
+                "200":
+                    description: good
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+
     /workers/{workerId}/reviews:
         post:
             summary: Create a review
@@ -382,6 +404,13 @@ components:
                     type: string
                 line:
                     type: string
+        changeProfilePicture:
+            type: object
+            required:
+                - picture
+            properties:
+                picture:
+                    type: string     
         review:
             type: object
             required:
