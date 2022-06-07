@@ -7,6 +7,7 @@ export default async (req, res, next) => {
   try {
     const userId = req.userId
     const { oldPassword, newPassword } = req.body
+    console.log(newPassword)
 
     if (oldPassword === newPassword) throw new CustomError(400, "old and new passwords must be different")
 
