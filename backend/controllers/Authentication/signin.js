@@ -5,6 +5,12 @@ import dotenv from "dotenv"
 import { CustomError } from "../../util/error.js"
 dotenv.config()
 
+/**
+ * req {object}
+ * req.name {string}
+ * req.password {i}
+ * returns {}
+ */
 export default async (req, res, next) => {
   console.log(req.body)
   const email = req.body.email
