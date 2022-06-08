@@ -307,6 +307,63 @@ paths:
                 "500":
                     description: Internal server error   
 
+    /autoComplete:
+        get:
+            summary: Auto Complete Search for workers
+            tags:
+              - Search
+            security:
+                - bearerAuth: []
+            parameters:
+              - in: query
+                name: text
+                schema: 
+                    type: string
+                required: true
+              - in: query
+                name: city
+                schema: 
+                    type: string
+                required: true
+            responses:
+                "200":
+                    description: good
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+    /search:
+        get:
+            summary: Search Results for workers
+            tags:
+              - Search
+            security:
+                - bearerAuth: []
+            parameters:
+              - in: query
+                name: text
+                schema: 
+                    type: string
+                required: true
+              - in: query
+                name: city
+                schema: 
+                    type: string
+                required: true
+            responses:
+                "200":
+                    description: good
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+
+
+
 components:
     securitySchemes:
         bearerAuth:
