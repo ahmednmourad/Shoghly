@@ -188,7 +188,7 @@ paths:
                     description: Unauthorized access
                 "500":
                     description: Internal server error
-    /profile/{userId}/changePicture:
+    /profile/changePicture:
         post:
             summary: Change Profile Picture
             tags:

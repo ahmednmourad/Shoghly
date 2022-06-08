@@ -7,6 +7,6 @@ const router = Router()
 
 router.get("/profile/:userId", getProfile)
 router.put("/profile", isAuth, updateProfile)
-router.post("/profile/:userId/changePicture", isAuth, changeProfilePicture)
+router.post("/profile/changePicture", isAuth, changeProfilePicture)
 
 export default router
