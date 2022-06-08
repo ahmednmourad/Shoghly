@@ -41,6 +41,7 @@ Resources:
       DBName: shoghly
       DBInstanceClass: db.t2.micro
       AllocatedStorage: 20
+      StorageType: gp2
       Engine: MySQL
       EngineVersion: 8.0.16
       MasterUsername: !Ref DbUsername
