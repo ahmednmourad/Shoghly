@@ -20,7 +20,8 @@ export default (req, res, next) => {
         const extension = extArray[extArray.length - 1]
         const fileName = `${uuidv4()}.${extension}`
         cb(null, fileName)
-      }
+      },
+      contentType: multerS3.AUTO_CONTENT_TYPE
     })
   }).array("photos", MAXIMUM_NUMBER_OF_FILES)
 
