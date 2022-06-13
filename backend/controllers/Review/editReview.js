@@ -11,8 +11,7 @@ export default async (req, res, next) => {
     if (!rating) throw new Error("No rating provided")
     if (!reviewId) throw new Error("No reviewId provided")
 
-    const review = { rating, description, reviewId, clientId }
-    const [rows] = await connection.query("UPDATE review SET ?", review)
+    const [rows] = await connection.query("UPDATE review SET rating = ? , description = ? WHERE reviewId =? AND clientId =?", [rating, description, reviewId, clientId])
     if (!rows.affectedRows) throw new CustomError(404, "review or client does not exist")
 
     return res.status(200).json({ message: "review edited successfully!" })
