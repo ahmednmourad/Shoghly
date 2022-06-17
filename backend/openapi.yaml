@@ -3,7 +3,7 @@ info:
     title: Shoghly
     contact:
         email: imohamedelshamy@gmail.com
-    version: 1.0.0
+    version: 1.0.1
 servers:
     - url: https://cjyzhu7lw2.execute-api.eu-central-1.amazonaws.com/dev
     - url: http://localhost:8080
@@ -45,6 +45,8 @@ paths:
     /upload:
         post:
             summary: Upload photo(s)
+            tags:
+              - Upload 
             security:
                 - bearerAuth: []
             requestBody:
@@ -203,6 +205,72 @@ paths:
             responses:
                 "200":
                     description: good
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+
+    /workers/projects:
+        post:
+            summary: Create a project
+            tags:
+                - Project
+            security:
+              - bearerAuth: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/project"
+            responses:
+                "201":
+                    description: OK, Created
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+    /workers/{workerId}/projects:
+        get:
+            summary: Get Worker projects
+            tags:
+              - Project
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: workerId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+    /workers/projects/{projectId}:
+        get:
+            summary: Get a Project
+            tags:
+                - Project
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: projectId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
                 "400":
                     description: Bad request
                 "401":
@@ -487,4 +555,19 @@ components:
                 oldPassword:
                     type: string
                 newPassword:
+                    type: string
+        project:
+            type: object
+            required:
+              - url
+              - description
+            additionalProperties: false
+            properties:
+                url:
+                    type: array
+                    items:
+                        type: string
+                    maxItems: 15
+                    uniqueItems: true
+                description:
                     type: string
