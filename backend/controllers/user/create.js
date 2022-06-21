@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid"
 import User from "../../services/user.js"
-import { encryptPassword } from "../../util/passwords.js"
-import { CustomError } from "../../util/error.js"
-import sendEmail from "../../util/sendEmail.js"
+import { encryptPassword } from "../../utils/passwords.js"
+import { CustomError } from "../../utils/error.js"
+import sendEmail from "../../utils/sendEmail.js"
 
 export default async (req, res, next) => {
   console.log(req.body)

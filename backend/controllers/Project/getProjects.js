@@ -1,4 +1,4 @@
-import connection from "../../util/mysql.js"
+import connection from "../../utils/mysql.js"
 
 export default async (req, res, next) => {
   const workerId = req.params.workerId

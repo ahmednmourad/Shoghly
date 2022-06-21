@@ -1,5 +1,5 @@
 import { UUID } from "sequelize"
-import { define } from "../util/sequelize.js"
+import { define } from "../utils/sequelize.js"
 
 export default define("blocked", {
   clientId: {

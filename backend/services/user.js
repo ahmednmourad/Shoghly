@@ -2,7 +2,7 @@
 
 import User from "../models/user.js"
 import Review from "../models/review.js"
-import { CustomError } from "../util/error.js"
+import { CustomError } from "../utils/error.js"
 
 export const create = async (user) => {
   return await User.create(user)
@@ -30,6 +30,7 @@ export const update = async (id, user) => {
 }
 
 export const changePassword = async (id, password) => {
+  console.log(id, password)
   const result = await User.update({ password }, { where: { userId: id } })
   if (!result) throw new CustomError("User not found")
 }
@@ -39,4 +40,8 @@ export const remove = async (id) => {
   if (!result) throw new CustomError("User not found")
 }
 
-export default { create, getById, getByEmail, update, changePassword, remove }
+const verifyEmail = async (email) => {
+  await User.update({ isConfirmed: true, emailConfirmationCode: null, emailCodeExpire: null, emailVerified: true }, { where: { email } })
+}
+
+export default { create, getById, getByEmail, update, changePassword, remove, verifyEmail }

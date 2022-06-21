@@ -1,6 +1,6 @@
 import { UUID, DATE, literal } from "sequelize"
 
-import { define } from "../util/database.js"
+import { define } from "../utils/database.js"
 
 export default define("favorite", {
   clientId: {

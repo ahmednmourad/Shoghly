@@ -26,6 +26,8 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
+            security:
+                - bearerAuth: []   
         get:
             tags:
                 - User
@@ -37,6 +39,8 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
+            security:
+                - bearerAuth: []
         put:
             tags:
                 - User
@@ -68,7 +72,25 @@ paths:
                     description: Internal server error
             security:
                 - bearerAuth: [] 
-
+    
+    /signin:
+        post:
+            tags:
+                - Authentication
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Signin"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    
     /workers/{workerId}:
         get:
             tags:
@@ -88,32 +110,15 @@ paths:
                 "500":
                     description: Internal server error
 
-    /signup:
+    /settings/forgot-password:
         post:
             tags:
-                - Authentication
+                - Settings
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Signup"
-                required: true
-            responses:
-                "201":
-                    description: Created
-                "400":
-                    description: Bad request
-                "500":
-                    description: Internal server error
-    /signin:
-        post:
-            tags:
-                - Authentication
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/Signin"
+                            $ref: "#/components/schemas/forgotPassword"
                 required: true
             responses:
                 "200":
@@ -122,6 +127,73 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
+    /settings/reset-password/{token}:
+        post:
+            tags:
+                - Settings
+            parameters:
+                - in: path
+                  name: token
+                  schema:
+                      type: string
+                  required: true
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/resetPassword"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+    /settings/change-password:
+        post:
+            tags:
+                - Settings
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ChangePassword"
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+    /settings/verify-email:
+        post:
+            tags:
+                - Settings
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+                                code:
+                                    type: string
+                required: true
+            responses:
+                "200":
+                    description: ok
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+
+
     /upload:
         post:
             summary: Upload photo(s)
@@ -146,149 +218,6 @@ paths:
                     description: ok
                 "400":
                     description: Bad request
-                "500":
-                    description: Internal server error
-    /forgotPassword:
-        post:
-            tags:
-                - Password
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/forgotPassword"
-                required: true
-            responses:
-                "200":
-                    description: ok
-                "400":
-                    description: Bad request
-                "500":
-                    description: Internal server error
-    /resetPassword/{token}:
-        post:
-            tags:
-                - Password
-            parameters:
-                - in: path
-                  name: token
-                  schema:
-                      type: string
-                  required: true
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/resetPassword"
-                required: true
-            responses:
-                "200":
-                    description: ok
-                "400":
-                    description: Bad request
-                "500":
-                    description: Internal server error
-    /change-password:
-        post:
-            tags:
-                - Password
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ChangePassword"
-                required: true
-            responses:
-                "200":
-                    description: ok
-                "400":
-                    description: Bad request
-                "500":
-                    description: Internal server error
-            security:
-                - bearerAuth: []
-    /verify/email:
-        post:
-            tags:
-                - Verification
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                email:
-                                    type: string
-                                    format: email
-                                code:
-                                    type: string
-                required: true
-            responses:
-                "200":
-                    description: ok
-                "400":
-                    description: Bad request
-                "500":
-                    description: Internal server error
-
-    /profile/{userId}:
-        get:
-            summary: Get a user profile
-            tags:
-                - Profile
-            parameters:
-                - in: path
-                  name: userId
-                  schema:
-                      type: string
-                  required: true
-            responses:
-                "200":
-                    description: OK
-                "400":
-                    description: Bad request
-                "500":
-                    description: Internal server error
-    /profile:
-        put:
-            summary: Update a user profile
-            tags:
-                - Profile
-            security:
-                - bearerAuth: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/updateProfile"
-            responses:
-                "200":
-                    description: good
-                "400":
-                    description: Bad request
-                "401":
-                    description: Unauthorized access
-                "500":
-                    description: Internal server error
-    /profile/changePicture:
-        post:
-            summary: Change Profile Picture
-            tags:
-                - Profile
-            security:
-                - bearerAuth: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/changeProfilePicture"                           
-            responses:
-                "200":
-                    description: good
-                "400":
-                    description: Bad request
-                "401":
-                    description: Unauthorized access
                 "500":
                     description: Internal server error
 
@@ -406,7 +335,7 @@ paths:
                     description: Unauthorized access
                 "500":
                     description: Internal server error
-    /reviews/{reviewId}:
+    /workers/reviews/{reviewId}:
         put:
             summary: Edit a review
             tags:

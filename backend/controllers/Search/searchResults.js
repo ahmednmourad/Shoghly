@@ -1,5 +1,5 @@
-import connection from "../../util/mysql.js"
-import { CustomError } from "../../util/error.js"
+import connection from "../../utils/mysql.js"
+import { CustomError } from "../../utils/error.js"
 
 export default async (req, res, next) => {
   const text = req.query.text

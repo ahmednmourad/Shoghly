@@ -1,5 +1,5 @@
 import Sequelize from "sequelize"
-import sequelize from "../util/sequelize.js"
+import sequelize from "../utils/sequelize.js"
 
 const User = sequelize.define("user", {
   userId: { type: Sequelize.UUID, primaryKey: true },

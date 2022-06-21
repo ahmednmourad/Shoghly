@@ -1,13 +1,12 @@
 import express from "express"
 import cors from "cors"
 import "./config.js"
-import sequelize from "./util/sequelize.js"
+import sequelize from "./utils/sequelize.js"
 
 import userRouter from "./routes/user.js"
-import workerRouter from "./routes/worker.js"
 import authenticationRouter from "./routes/authentication.js"
-import passwordRouter from "./routes/password.js"
-import profileRouter from "./routes/profile.js"
+import settingsRouter from "./routes/settings.js"
+import workerRouter from "./routes/worker.js"
 import projectRouter from "./routes/project.js"
 import uploadRouter from "./routes/upload.js"
 import reviewRouter from "./routes/review.js"
@@ -28,13 +27,12 @@ app.use(cors({ credentials: true, origin: "*" }))
 
 app.use(userRouter)
 app.use(workerRouter)
-app.use(authenticationRouter)
-app.use(passwordRouter)
-app.use(uploadRouter)
-app.use(profileRouter)
-app.use(projectRouter)
 app.use(reviewRouter)
+app.use(authenticationRouter)
+app.use(uploadRouter)
+app.use(projectRouter)
 app.use(searchRouter)
+app.use(settingsRouter)
 app.use(errorHandler)
 
 app.listen(8080, () => { console.log("Listening to port 8080.") })

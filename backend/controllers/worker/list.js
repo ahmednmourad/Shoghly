@@ -1,5 +1,5 @@
 
-import { CustomError } from "../../util/error.js"
+import { CustomError } from "../../utils/error.js"
 
 export default async (req, res, next) => {
   const city = req.query.city

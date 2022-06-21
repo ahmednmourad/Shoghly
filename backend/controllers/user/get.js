@@ -1,7 +1,7 @@
 import User from "../../services/user.js"
 
 export default async (req, res, next) => {
-  const userId = req.params.userId
+  const userId = req.userId
 
   try {
     const user = await User.getById(userId)

@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize"
-import sequelize from "../util/sequelize.js"
+import sequelize from "../utils/sequelize.js"
 import User from "./user.js"
 
 const Project = sequelize.define("project", {
