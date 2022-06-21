@@ -13,10 +13,8 @@ export default async (req, res, next) => {
     if (!Array.isArray(url)) throw new CustomError(400, "Urls must be in Array")
     if (!description) throw new CustomError(400, "NO Description provided")
 
-    const [rows] = await connection.query("SELECT role FROM user WHERE userId = ?", [id])
-    const user = rows[0]
-
-    if (user.role !== "worker") throw new CustomError(401, "Unauthorized to create projects")
+    const role = getUserRole(id)
+    if (role !== "worker") throw new CustomError(401, "Unauthorized to create projects")
   } catch (err) {
     next(err)
   }
@@ -32,6 +30,10 @@ export default async (req, res, next) => {
     await connection.query("ROLLBACK")
     next(err)
   }
+}
+const getUserRole = async id => {
+  const [rows] = await connection.query("SELECT role FROM user WHERE userId = ?", [id])
+  return rows[0].role
 }
 const getProjectPictures = (urls, projectId) => {
   return urls.map(url => [url, projectId])
