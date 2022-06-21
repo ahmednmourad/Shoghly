@@ -9,5 +9,5 @@ region = "eu-central-1"
 profile = "ahmednmourad"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "DbName=\"shoghly\" DbUsername=\"db-username\" DbPassword=\"db-password\" EmailUser=\"email-user\" EmailPassword=\"email-password\" JwtSecretKey=\"jwt-secret-key\" KeyName=\"shoghly\" VpcId=\"vpc-0678ce4bb75315bae\""
+parameter_overrides = "DbName=\"shoghly\" DbUsername=\"db-username\" DbPassword=\"db-password\" SendinblueApiKey=\"sendinblue-api-key\" JwtSecretKey=\"jwt-secret-key\" KeyName=\"shoghly\" VpcId=\"vpc-0678ce4bb75315bae\""
 image_repositories = []
