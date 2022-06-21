@@ -1,5 +1,5 @@
 import { Router } from "express"
-import isAuth from "../middleware/isAuth.js"
+import isAuth from "../middlewares/isAuth.js"
 import createProject from "../controllers/Project/createProject.js"
 import editProject from "../controllers/Project/editProject.js"
 import deleteProject from "../controllers/Project/deleteProject.js"

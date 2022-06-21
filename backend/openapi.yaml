@@ -8,18 +8,85 @@ servers:
     - url: http://localhost:8080
     - url: https://cjyzhu7lw2.execute-api.eu-central-1.amazonaws.com/dev
 paths:
-    /user:
+    /users:
+        post:
+            tags:
+                - User
+            summary: Creates a user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Signup"
+                required: true
+            responses:
+                "201":
+                    description: Created
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+        get:
+            tags:
+                - User
+            summary: Gets a user profile
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+        put:
+            tags:
+                - User
+            summary: Updates a user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/updateProfile"
+            responses:
+                "200":
+                    description: good
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
         delete:
             tags:
                 - User
-            summary: deletes a user
+            summary: Deletes a user
             responses:
                 "200":
                     description: Created
                 "500":
                     description: Internal server error
             security:
-                - bearerAuth: []
+                - bearerAuth: [] 
+
+    /workers/{workerId}:
+        get:
+            tags:
+                - Workers
+            summary: Get a worker public profile
+            parameters:
+                - name: workerId
+                  in: path
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
 
     /signup:
         post:
@@ -443,8 +510,6 @@ paths:
                 "500":
                     description: Internal server error
 
-
-
 components:
     securitySchemes:
         bearerAuth:
@@ -477,6 +542,7 @@ components:
                     type: string
                 role:
                     type: string
+                    enum: ["worker", "client"]
                 profession:
                     type: string
                 phone:
@@ -542,6 +608,8 @@ components:
                     type: string
                 line:
                     type: string
+                picture:
+                    type: string    
         changeProfilePicture:
             type: object
             required:

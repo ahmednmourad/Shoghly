@@ -5,14 +5,7 @@ import dotenv from "dotenv"
 import { CustomError } from "../../util/error.js"
 dotenv.config()
 
-/**
- * req {object}
- * req.name {string}
- * req.password {i}
- * returns {}
- */
 export default async (req, res, next) => {
-  console.log(req.body)
   const email = req.body.email
   const password = req.body.password
 
@@ -25,8 +18,8 @@ export default async (req, res, next) => {
     const isValidPassword = await comparePassword(password, user.password)
     if (!isValidPassword) throw new CustomError(400, "incorrect email or password")
 
-    const accessToken = jwt.sign({ email, userId: user.userId }, process.env.JWT_SECRET_KEY, { expiresIn: "365d" })
-
+    const accessToken = jwt.sign({ userId: user.userId, userRole: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "365d" })
+    console.log("Login successfull.", { UserID: user.userId, Role: user.role })
     return res.status(200).json({ message: "logged in successfully", accessToken, userId: user.userId })
   } catch (err) {
     next(err)

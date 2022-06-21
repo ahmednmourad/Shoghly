@@ -2,7 +2,7 @@ import { Router } from "express"
 import changeProfilePicture from "../controllers/Profile/changeProfilePicture.js"
 import getProfile from "../controllers/Profile/getProfile.js"
 import updateProfile from "../controllers/Profile/updateProfile.js"
-import isAuth from "../middleware/isAuth.js"
+import isAuth from "../middlewares/isAuth.js"
 const router = Router()
 
 router.get("/profile/:userId", getProfile)

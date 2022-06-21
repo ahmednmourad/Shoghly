@@ -1,10 +1,8 @@
 import Sequelize from "sequelize"
 import sequelize from "../util/sequelize.js"
-export default sequelize.define("user", {
-  userId: {
-    type: Sequelize.UUID,
-    primaryKey: true
-  },
+
+const User = sequelize.define("user", {
+  userId: { type: Sequelize.UUID, primaryKey: true },
   firstName: { type: Sequelize.STRING, allowNull: false },
   lastName: { type: Sequelize.STRING, allowNull: false },
   gender: { type: Sequelize.STRING },
@@ -24,10 +22,7 @@ export default sequelize.define("user", {
   emailVerified: { type: Sequelize.BOOLEAN, defaultValue: false }
 },
 {
-  indexes: [
-    {
-      unique: true,
-      fields: ["email"]
-    }
-  ]
+  indexes: [{ unique: true, fields: ["email"] }]
 })
+
+export default User

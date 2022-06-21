@@ -11,6 +11,7 @@ export default (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
     if (!decodedToken) return res.status(401).json({ message: "Not authenticated, No authorization header" })
     req.userId = decodedToken.userId
+    req.userRole = decodedToken.userRole
   } catch (err) {
     console.log(err.stack)
     return res.status(500).json({ message: "Something went wrong" })
