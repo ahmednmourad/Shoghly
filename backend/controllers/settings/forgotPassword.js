@@ -11,7 +11,7 @@ export default async (req, res, next) => {
 
   try {
     const user = await User.getByEmail(email)
-    const token = jwt.sign({ userId: user.id, userRole: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
+    const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
     const link = `${process.env.DB_NAME}/reset-password/${token}`
 
     await sendEmail(email, "Password reset", link)

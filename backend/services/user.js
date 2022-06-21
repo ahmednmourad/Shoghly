@@ -24,6 +24,11 @@ export const getByEmail = async (email) => {
   return user
 }
 
+export const getAllWorkers = async (filters) => {
+  const { count, rows } = await User.findAndCountAll({ include: { model: Review, attributes: { exclude: ["workerId"] } }, where: { role: "worker", ...filters }, attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line"] })
+  return { workers: rows, count }
+}
+
 export const update = async (id, user) => {
   const result = await User.update(user, { where: { userId: id } })
   if (!result) throw new CustomError("User not found")
@@ -44,4 +49,4 @@ const verifyEmail = async (email) => {
   await User.update({ isConfirmed: true, emailConfirmationCode: null, emailCodeExpire: null, emailVerified: true }, { where: { email } })
 }
 
-export default { create, getById, getByEmail, update, changePassword, remove, verifyEmail }
+export default { create, getById, getByEmail, update, changePassword, remove, verifyEmail, getAllWorkers }

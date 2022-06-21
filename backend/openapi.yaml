@@ -11,7 +11,7 @@ paths:
     /users:
         post:
             tags:
-                - User
+                - Users
             summary: Creates a user
             requestBody:
                 content:
@@ -30,7 +30,7 @@ paths:
                 - bearerAuth: []   
         get:
             tags:
-                - User
+                - Users
             summary: Gets a user profile
             responses:
                 "200":
@@ -43,7 +43,7 @@ paths:
                 - bearerAuth: []
         put:
             tags:
-                - User
+                - Users
             summary: Updates a user
             requestBody:
                 content:
@@ -63,7 +63,7 @@ paths:
                 - bearerAuth: []
         delete:
             tags:
-                - User
+                - Users
             summary: Deletes a user
             responses:
                 "200":
@@ -109,6 +109,31 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
+    /workers:
+        get:
+            tags:
+                - Workers
+            summary: Gets all workers
+            parameters:
+                - name: city
+                  in: query
+                  schema:
+                    type: string
+                  required: true
+                - name: profession
+                  in: query
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
 
     /settings/forgot-password:
         post:
@@ -192,7 +217,6 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
-
 
     /upload:
         post:
