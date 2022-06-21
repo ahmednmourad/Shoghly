@@ -11,17 +11,14 @@ export default async (req, res, next) => {
   try {
     if (!url) throw new CustomError(400, "No Url provided")
     if (!Array.isArray(url)) throw new CustomError(400, "Urls must be in Array")
-    if (!description) throw new CustomError(400, "NO Description provided")
+    if (!description) throw new CustomError(400, "No Description provided")
 
     const [rows] = await connection.query("SELECT role FROM user WHERE userId = ?", [id])
     const user = rows[0]
 
     if (user.role !== "worker") throw new CustomError(401, "Unauthorized to create projects")
-  } catch (err) {
-    next(err)
-  }
-  const projectPictures = getProjectPictures(url, projectId)
-  try {
+    const projectPictures = getProjectPictures(url, projectId)
+
     await connection.query("START TRANSACTION")
     await connection.query("INSERT INTO project set ? ", [project])
     await connection.query("INSERT INTO picture (url , projectId) VALUES ?", [projectPictures])
@@ -29,7 +26,6 @@ export default async (req, res, next) => {
     console.log("Project created! " + projectId)
     return res.status(201).json({ message: "Project created!", projectId })
   } catch (err) {
-    await connection.query("ROLLBACK")
     next(err)
   }
 }

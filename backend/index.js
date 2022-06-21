@@ -36,6 +36,6 @@ app.use(errorHandler)
 
 app.listen(8080, () => { console.log("Listening to port 8080.") })
 
-sequelize.sync()
+sequelize.sync({force: true})
   .then(() => console.log(`${process.env.NODE_ENV} Database is ready`))
   .catch(err => console.error("Database server is broken", err))
