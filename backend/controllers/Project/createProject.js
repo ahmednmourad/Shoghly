@@ -1,6 +1,6 @@
-import connection from "../../util/mysql.js"
+import connection from "../../utils/mysql.js"
 import { v4 as uuidv4 } from "uuid"
-import { CustomError } from "../../util/error.js"
+import { CustomError } from "../../utils/error.js"
 
 export default async (req, res, next) => {
   const id = req.userId
@@ -11,7 +11,7 @@ export default async (req, res, next) => {
   try {
     if (!url) throw new CustomError(400, "No Url provided")
     if (!Array.isArray(url)) throw new CustomError(400, "Urls must be in Array")
-    if (!description) throw new CustomError(400, "NO Description provided")
+    if (!description) throw new CustomError(400, "No Description provided")
 
     const role = getUserRole(id)
     if (role !== "worker") throw new CustomError(401, "Unauthorized to create projects")
@@ -27,7 +27,6 @@ export default async (req, res, next) => {
     console.log("Project created! " + projectId)
     return res.status(201).json({ message: "Project created!", projectId })
   } catch (err) {
-    await connection.query("ROLLBACK")
     next(err)
   }
 }

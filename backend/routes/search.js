@@ -1,5 +1,5 @@
 import { Router } from "express"
-import isAuth from "../middleware/isAuth.js"
+import isAuth from "../middlewares/isAuth.js"
 import autoComplete from "../controllers/Search/autoComplete.js"
 import searchResults from "../controllers/Search/searchResults.js"
 const router = Router()

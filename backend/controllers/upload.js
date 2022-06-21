@@ -1,4 +1,4 @@
-import { CustomError } from "../util/error.js"
+import { CustomError } from "../utils/error.js"
 export default (req, res) => {
   console.log(req.files)
   const data = req.files.map((file) => {

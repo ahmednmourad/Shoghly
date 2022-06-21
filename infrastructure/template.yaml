@@ -14,12 +14,9 @@ Parameters:
   DbPassword:
     Type: AWS::SSM::Parameter::Value<String>
     Default: db-password
-  EmailUser:
+  SendinblueApiKey:
     Type: AWS::SSM::Parameter::Value<String>
-    Default: email-user
-  EmailPassword:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: email-password
+    Default: sendinblue-api-key
   JwtSecretKey:
     Type: AWS::SSM::Parameter::Value<String>
     Default: jwt-secret-key
@@ -87,9 +84,8 @@ Resources:
             echo export DB_HOSTNAME=${Rds.Endpoint.Address} | sudo tee -a /etc/profile
             echo export DB_USERNAME=${DbUsername} | sudo tee -a /etc/profile
             echo export DB_PASSWORD=${DbPassword} | sudo tee -a /etc/profile
-            echo export EMAIL_USER=${EmailUser} | sudo tee -a /etc/profile
-            echo export EMAIL_PASS=${EmailPassword} | sudo tee -a /etc/profile
             echo export JWT_SECRET_KEY=${JwtSecretKey} | sudo tee -a /etc/profile
+            echo export SENDINBLUE_API_KEY=${SendinblueApiKey} | sudo tee -a /etc/profile
             echo export S3_BUCKET_NAME='shoghly-s3' | sudo tee -a /etc/profile
             source /etc/profile.d/sdk.sh
 
