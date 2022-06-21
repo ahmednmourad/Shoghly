@@ -3,9 +3,9 @@ import isAuth from "../middlewares/isAuth.js"
 import isClient from "../middlewares/isClient.js"
 
 import createReview from "../controllers/review/create.js"
-import updateReview from "../controllers/Review/update.js"
-import deleteReview from "../controllers/Review/delete.js"
-import listReviews from "../controllers/Review/list.js"
+import updateReview from "../controllers/review/update.js"
+import deleteReview from "../controllers/review/delete.js"
+import listReviews from "../controllers/review/list.js"
 
 const router = Router()
 

@@ -1,10 +1,10 @@
 import { Router } from "express"
 import isAuth from "../middlewares/isAuth.js"
-import createProject from "../controllers/Project/createProject.js"
-import editProject from "../controllers/Project/editProject.js"
-import deleteProject from "../controllers/Project/deleteProject.js"
-import getProject from "../controllers/Project/getProject.js"
-import getProjects from "../controllers/Project/getProjects.js"
+import createProject from "../controllers/project/createProject.js"
+import editProject from "../controllers/project/editProject.js"
+import deleteProject from "../controllers/project/deleteProject.js"
+import getProject from "../controllers/project/getProject.js"
+import getProjects from "../controllers/project/getProjects.js"
 
 const router = Router()
 

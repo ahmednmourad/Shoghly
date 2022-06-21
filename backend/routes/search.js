@@ -1,7 +1,7 @@
 import { Router } from "express"
 import isAuth from "../middlewares/isAuth.js"
-import autoComplete from "../controllers/Search/autoComplete.js"
-import searchResults from "../controllers/Search/searchResults.js"
+import autoComplete from "../controllers/search/autoComplete.js"
+import searchResults from "../controllers/search/searchResults.js"
 const router = Router()
 
 router.get("/autocomplete", isAuth, autoComplete)
