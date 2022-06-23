@@ -2,6 +2,7 @@
 "use strict"
 
 import Review from "../models/review.js"
+import User from "../models/user.js"
 import { CustomError } from "../utils/error.js"
 
 export const create = async (review) => {
@@ -9,7 +10,7 @@ export const create = async (review) => {
 }
 
 export const list = async (workerId) => {
-  const { count, rows } = await Review.findAndCountAll({ where: { workerId } })
+  const { count, rows } = await Review.findAndCountAll({ include: { model: User, attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"] }, where: { workerId } })
   return { reviews: rows, count }
 }
 
@@ -24,4 +25,4 @@ export const remove = async (reviewId, clientId) => {
   if (count === 0) throw new CustomError(404, "Review not found")
 }
 
-export default {create, list, update, remove }
+export default { create, list, update, remove }
