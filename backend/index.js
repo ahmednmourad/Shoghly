@@ -1,4 +1,5 @@
 import express from "express"
+import bodyParser from "body-parser"
 import cors from "cors"
 import "./config.js"
 import sequelize from "./utils/sequelize.js"
@@ -11,8 +12,6 @@ import projectRouter from "./routes/project.js"
 import uploadRouter from "./routes/upload.js"
 import reviewRouter from "./routes/review.js"
 import searchRouter from "./routes/search.js"
-
-import bodyParser from "body-parser"
 import errorHandler from "./middlewares/errorHandler.js"
 
 import "./models/user.js"

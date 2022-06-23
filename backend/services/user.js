@@ -3,17 +3,35 @@
 import User from "../models/user.js"
 import Review from "../models/review.js"
 import { CustomError } from "../utils/error.js"
+import sequelize from "../utils/sequelize.js"
 
 export const create = async (user) => {
   return await User.create(user)
 }
 
 export const getById = async (id) => {
-  const user = await User.findByPk(id, { attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line"] })
+  const user = await User.findByPk(id, {
+    attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line"],
+    raw: true
+  })
   if (!user) throw new CustomError(404, "User not found")
   if (user.role === "worker") {
-    const { count, rows } = await Review.findAndCountAll({ include: { model: User, attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"] }, where: { workerId: id }, attributes: { exclude: ["workerId", "clientId"] } })
-    return { ...user.dataValues, reviews: rows, reviewsCount: count }
+    const reviews = await Review.findAll({
+      include: {
+        model: User,
+        as: "client",
+        attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"]
+      },
+      attributes: {
+        exclude: ["workerId", "clientId"]
+      },
+      where: { workerId: id },
+      logging: console.log
+    })
+    // Count & Average would change to a query if we had pagination in place
+    const reviewsCount = reviews.length
+    const reviewsAverage = reviews.reduce((previous, current) => previous.rating + current.rating) / reviewsCount
+    return { ...user, reviews, reviewsCount, reviewsAverage }
   }
   return user
 }
@@ -25,7 +43,13 @@ export const getByEmail = async (email) => {
 }
 
 export const getAllWorkers = async (filters) => {
-  const { count, rows } = await User.findAndCountAll({ include: { model: Review, attributes: { exclude: ["workerId"] } }, where: { role: "worker", ...filters }, attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line"] })
+  const { count, rows } = await User.findAndCountAll({
+    where: { role: "worker", ...filters },
+    attributes: [
+      ["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line",
+      [sequelize.literal("(SELECT AVG(rating) FROM review WHERE review.workerId = user.userId)"), "averageRating"]
+    ]
+  })
   return { workers: rows, count }
 }
 

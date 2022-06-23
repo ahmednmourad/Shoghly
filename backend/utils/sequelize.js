@@ -10,7 +10,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
     freezeTableName: true,
     timestamps: false
   },
-  logging: false
+  logging: false,
+  dialectOptions: {
+    decimalNumbers: true
+}
 })
 
 export default sequelize
