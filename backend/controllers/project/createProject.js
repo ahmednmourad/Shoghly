@@ -13,13 +13,10 @@ export default async (req, res, next) => {
     if (!Array.isArray(url)) throw new CustomError(400, "Urls must be in Array")
     if (!description) throw new CustomError(400, "No Description provided")
 
-    const role = getUserRole(id)
+    const role = await getUserRole(id)
     if (role !== "worker") throw new CustomError(401, "Unauthorized to create projects")
-  } catch (err) {
-    next(err)
-  }
-  const projectPictures = getProjectPictures(url, projectId)
-  try {
+    const projectPictures = getProjectPictures(url, projectId)
+
     await connection.query("START TRANSACTION")
     await connection.query("INSERT INTO project set ? ", [project])
     await connection.query("INSERT INTO picture (url , projectId) VALUES ?", [projectPictures])
