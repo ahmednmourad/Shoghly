@@ -30,7 +30,7 @@ export const getById = async (id) => {
     })
     // Count & Average would change to a query if we had pagination in place
     const reviewsCount = reviews.length
-    const reviewsAverage = reviews.reduce((previous, current) => previous.rating + current.rating) / reviewsCount
+    const reviewsAverage = reviews.reduce((previous, current) => previous.rating + current.rating, 0) / reviewsCount
     return { ...user, reviews, reviewsCount, reviewsAverage }
   }
   return user
