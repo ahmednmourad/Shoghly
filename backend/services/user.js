@@ -12,7 +12,7 @@ export const getById = async (id) => {
   const user = await User.findByPk(id, { attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line"] })
   if (!user) throw new CustomError(404, "User not found")
   if (user.role === "worker") {
-    const { count, rows } = await Review.findAndCountAll({ where: { workerId: id }, attributes: { exclude: ["workerId"] } })
+    const { count, rows } = await Review.findAndCountAll({ include: { model: User, attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"] }, where: { workerId: id }, attributes: { exclude: ["workerId", "clientId"] } })
     return { ...user.dataValues, reviews: rows, reviewsCount: count }
   }
   return user

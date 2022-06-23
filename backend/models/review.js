@@ -22,5 +22,7 @@ const Review = sequelize.define("review", {
 
 User.hasMany(Review, { foreignKey: "clientId" })
 User.hasMany(Review, { foreignKey: "workerId" })
+Review.belongsTo(User, { foreignKey: "workerId", targetKey: "userId" })
+Review.belongsTo(User, { foreignKey: "clientId", targetKey: "userId" })
 
 export default Review
