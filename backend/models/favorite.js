@@ -1,10 +1,10 @@
-import { UUID, DATE, literal } from "sequelize"
+import Sequelize from "sequelize"
+import sequelize from "../utils/sequelize.js"
+import User from "./user.js"
 
-import { define } from "../utils/database.js"
-
-export default define("favorite", {
+const Favorite = sequelize.define("favorite", {
   clientId: {
-    type: UUID,
+    type: Sequelize.UUID,
     primaryKey: true,
     allowNull: false,
     references: {
@@ -13,7 +13,7 @@ export default define("favorite", {
     }
   },
   workerId: {
-    type: UUID,
+    type: Sequelize.UUID,
     primaryKey: true,
     allowNull: false,
     references: {
@@ -21,5 +21,12 @@ export default define("favorite", {
       key: "userId"
     }
   },
-  createdAt: { type: DATE, allowNull: false, defaultValue: literal("CURRENT_TIMESTAMP") }
+  createdAt: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.literal("CURRENT_TIMESTAMP") }
 })
+
+User.hasMany(Favorite, { foreignKey: "clientId" })
+User.hasMany(Favorite, { foreignKey: "workerId" })
+Favorite.belongsTo(User, { as: "client", foreignKey: "clientId" })
+Favorite.belongsTo(User, { as: "worker", foreignKey: "workerId" })
+
+export default Favorite

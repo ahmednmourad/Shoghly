@@ -135,6 +135,60 @@ paths:
             security:
                 - bearerAuth: []
 
+    /favorites/workers/{workerId}:
+        post:
+            tags:
+                - Favorites
+            summary: Adds the specified worker to the client's favorites.
+            parameters:
+                - name: workerId
+                  in: path
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+        delete:
+            tags:
+                - Favorites
+            summary: Removes the specified worker from the client's favorites.
+            parameters:
+                - name: workerId
+                  in: path
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+    /favorites:
+        get:
+            tags:
+                - Favorites
+            summary: List client favorites
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+
     /settings/forgot-password:
         post:
             tags:

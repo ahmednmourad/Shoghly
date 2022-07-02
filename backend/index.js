@@ -12,6 +12,7 @@ import projectRouter from "./routes/project.js"
 import uploadRouter from "./routes/upload.js"
 import reviewRouter from "./routes/review.js"
 import searchRouter from "./routes/search.js"
+import favoriteRouter from "./routes/favorite.js"
 import errorHandler from "./middlewares/errorHandler.js"
 
 import "./models/user.js"
@@ -32,6 +33,7 @@ app.use(uploadRouter)
 app.use(projectRouter)
 app.use(searchRouter)
 app.use(settingsRouter)
+app.use(favoriteRouter)
 app.use(errorHandler)
 
 app.listen(8080, () => { console.log("Listening to port 8080.") })
