@@ -9,7 +9,7 @@ export default (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
-    if (!decodedToken) return res.status(401).json({ message: "Not authenticated, No authorization header" })
+    if (!decodedToken) return res.status(401).json({ message: "Not authenticated" })
     req.userId = decodedToken.userId
     req.role = decodedToken.role
     req.email = decodedToken.email

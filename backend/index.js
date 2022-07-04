@@ -15,6 +15,8 @@ import uploadRouter from "./routes/upload.js"
 import reviewRouter from "./routes/review.js"
 import searchRouter from "./routes/search.js"
 import favoriteRouter from "./routes/favorite.js"
+import messageRouter from "./routes/message.js"
+import isAuth from "./middlewares/isAuth.js"
 import errorHandler from "./middlewares/errorHandler.js"
 
 import "./models/user.js"
@@ -22,9 +24,13 @@ import "./models/review.js"
 import "./models/project.js"
 import "./models/picture.js"
 
+import jwt from "jsonwebtoken"
+import User from "./services/user.js"
+
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
+app.io = io
 
 app.use(bodyParser.json())
 app.use(cors({ credentials: true, origin: "*" }))
@@ -38,24 +44,35 @@ app.use(projectRouter)
 app.use(searchRouter)
 app.use(settingsRouter)
 app.use(favoriteRouter)
+app.use(messageRouter)
 app.use(errorHandler)
-
-io.on("connection", (socket) => {
-  // Update socketId to socket.id in the database
-  // UPDATE user SET socketId = ? WHERE userId = ?
-
-  // listen for message from user
-  socket.on("message", (message) => {
-    console.log("message", message)
-  })
-
-  // when server disconnects from user
-  socket.on("disconnect", () => {
-    // Update socketId to null in the database
-    // UPDATE user SET socketId = NULL WHERE userId = ?
-    console.log("disconnected from user")
-  })
+io.use((socket, next) => {
+  const token = socket.handshake.query.token
+  if (!token) next(new Error("No token provided"))
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    socket.userId = decodedToken.userId
+    next()
+  } catch (err) {
+    next(new Error("Unauthenticated"))
+  }
 })
+  .on("connection", async (socket) => {
+    console.log(`connected to user: ${socket.userId} on socketId: ${socket.id}`)
+    await User.update(socket.userId, { socketId: socket.id })
+
+    // listen for message from user
+    socket.on("message", (message) => {
+      console.log("message", message)
+    })
+
+    // when server disconnects from user
+    socket.on("disconnect", async () => {
+      // UPDATE user SET socketId = NULL WHERE userId = socket.userId
+      console.log(`disconnected from user: ${socket.userId}`)
+      await User.update(socket.userId, { socketId: null })
+    })
+  })
 
 sequelize.sync()
   .then(() => console.log(`${process.env.NODE_ENV} Database is ready`))

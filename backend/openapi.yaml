@@ -188,6 +188,49 @@ paths:
                     description: Internal server error
             security:
                 - bearerAuth: []
+    
+    # /chats:
+    #     get:
+    #         tags:
+    #             - Chats
+    #         summary: Get all chats
+    #         responses:
+    #             "200":
+    #                 description: OK
+    #             "400":
+    #                 description: Bad request
+    #             "500":
+    #                 description: Internal server error
+    #         security:
+    #             - bearerAuth: []
+    /messages:
+        post:
+            tags:
+                - Message
+            summary: Send a message
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                receiverId:
+                                    type: string
+                                    format: uuid
+                                text:
+                                    type: string
+                                attachment:
+                                    type: string
+                                
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
 
     /settings/forgot-password:
         post:

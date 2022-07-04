@@ -11,7 +11,7 @@ export const create = async (user) => {
 
 export const getById = async (id) => {
   const user = await User.findByPk(id, {
-    attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line"],
+    attributes: [["userId", "id"], "firstName", "lastName", "phone", "picture", "role", "profession", "gender", "country", "city", "line", "emailVerified"],
     raw: true
   })
   if (!user) throw new CustomError(404, "User not found")
@@ -34,6 +34,12 @@ export const getById = async (id) => {
     return { ...user, reviews, reviewsCount, reviewsAverage }
   }
   return user
+}
+
+export const getSocketId = async (id) => {
+  const user = await User.findByPk(id, { attributes: ["socketId"], raw: true })
+  if (!user) throw new CustomError(404, "User not found")
+  return user.socketId
 }
 
 export const getByEmail = async (email) => {
@@ -73,4 +79,4 @@ const verifyEmail = async (email) => {
   await User.update({ isConfirmed: true, emailConfirmationCode: null, emailCodeExpire: null, emailVerified: true }, { where: { email } })
 }
 
-export default { create, getById, getByEmail, update, changePassword, remove, verifyEmail, getAllWorkers }
+export default { create, getById, getByEmail, update, changePassword, remove, verifyEmail, getAllWorkers, getSocketId }

@@ -19,6 +19,7 @@ const User = sequelize.define("user", {
   isConfirmed: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
   emailConfirmationCode: { type: Sequelize.STRING },
   emailCodeExpire: { type: Sequelize.DATE },
+  socketId: { type: Sequelize.STRING },
   emailVerified: { type: Sequelize.BOOLEAN, defaultValue: false }
 },
 {
