@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import isAuth from "../middlewares/isAuth.js"
-import createProject from "../controllers/project/create.js"
+import createProject from "../controllers/Project/create.js"
 import editProject from "../controllers/Project/update.js"
 import deleteProject from "../controllers/Project/delete.js"
 import getProject from "../controllers/Project/get.js"
