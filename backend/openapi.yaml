@@ -407,6 +407,53 @@ paths:
                     description: Unauthorized access
                 "500":
                     description: Internal server error
+        put:
+            summary: Edit a project
+            tags:
+                - Project
+            security:
+              - bearerAuth: []
+            parameters:
+                - in: path
+                  name: projectId
+                  schema:
+                      type: string
+                  required: true
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/project"
+            responses:
+                "200":
+                    description: OK, Created
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
+        delete:
+            summary: Deletes a Project
+            tags:
+                - Project
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: projectId
+                  schema:
+                      type: string
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "401":
+                    description: Unauthorized access
+                "500":
+                    description: Internal server error
 
     /workers/{workerId}/reviews:
         post:
@@ -690,11 +737,11 @@ components:
         project:
             type: object
             required:
-              - url
+              - urls
               - description
             additionalProperties: false
             properties:
-                url:
+                urls:
                     type: array
                     items:
                         type: string
