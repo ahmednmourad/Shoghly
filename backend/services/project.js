@@ -19,13 +19,6 @@ const list = async (workerId) => {
     type: sequelize.QueryTypes.SELECT,
     raw: true
   })
-
-  // const { count, rows } = await Project.findAndCountAll({
-  //   // include: { model: Photo, attributes: ["url"], limit: 1 },
-  //   where: { workerId },
-  //   attributes: [["projectId", "id"], "description"]
-  // })
-  // return { projects: rows, count }
 }
 
 const getById = async (id) => {
