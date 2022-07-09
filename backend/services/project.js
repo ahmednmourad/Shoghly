@@ -14,8 +14,18 @@ const addPhotos = async (photos) => {
 }
 
 const list = async (workerId) => {
-  const { count, rows } = await Project.findAndCountAll({ include: { model: Photo, attributes: ["url"], limit: 1 }, where: { workerId } })
-  return { projects: rows, count }
+  return await sequelize.query("SELECT projectId id, description, json_array((SELECT url FROM picture where picture.projectId = project.projectId limit 1)) as pictures FROM project WHERE workerId = ?", {
+    replacements: [workerId],
+    type: sequelize.QueryTypes.SELECT,
+    raw: true
+  })
+
+  // const { count, rows } = await Project.findAndCountAll({
+  //   // include: { model: Photo, attributes: ["url"], limit: 1 },
+  //   where: { workerId },
+  //   attributes: [["projectId", "id"], "description"]
+  // })
+  // return { projects: rows, count }
 }
 
 const getById = async (id) => {
