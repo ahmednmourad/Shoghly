@@ -189,25 +189,25 @@ paths:
             security:
                 - bearerAuth: []
     
-    # /chats:
-    #     get:
-    #         tags:
-    #             - Chats
-    #         summary: Get all chats
-    #         responses:
-    #             "200":
-    #                 description: OK
-    #             "400":
-    #                 description: Bad request
-    #             "500":
-    #                 description: Internal server error
-    #         security:
-    #             - bearerAuth: []
+    /chats:
+        get:
+            tags:
+                - Chats
+            summary: Get all chats
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
     /messages:
         post:
             tags:
-                - Message
-            summary: Send a message
+                - Messages
+            summary: Send a message to a user
             requestBody:
                 content:
                     application/json:
@@ -222,6 +222,46 @@ paths:
                                 attachment:
                                     type: string
                                 
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+    /users/{userId}/messages:
+        get:
+            tags:
+                - Messages
+            summary: Lists the messages with a specific user.
+            parameters:
+              - name: userId
+                in: path
+                required: true
+                schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+            security:
+                - bearerAuth: []
+    /messages/{messageId}/acknowledge-read:
+        post:
+            tags:
+                - Messages
+            summary: Acknowledge that the message was read. Only the receiver may acknowledge that the message was read.
+            parameters:
+              - name: messageId
+                in: path
+                required: true
+                schema:
+                    type: string
             responses:
                 "200":
                     description: OK

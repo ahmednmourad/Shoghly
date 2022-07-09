@@ -39,6 +39,8 @@ export const getById = async (id) => {
 export const getSocketId = async (id) => {
   const user = await User.findByPk(id, { attributes: ["socketId"], raw: true })
   if (!user) throw new CustomError(404, "User not found")
+
+  console.log("SocketId", user.socketId)
   return user.socketId
 }
 

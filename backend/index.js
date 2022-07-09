@@ -16,13 +16,16 @@ import reviewRouter from "./routes/review.js"
 import searchRouter from "./routes/search.js"
 import favoriteRouter from "./routes/favorite.js"
 import messageRouter from "./routes/message.js"
-import isAuth from "./middlewares/isAuth.js"
+import chatRouter from "./routes/chat.js"
 import errorHandler from "./middlewares/errorHandler.js"
 
 import "./models/user.js"
 import "./models/review.js"
 import "./models/project.js"
 import "./models/picture.js"
+import "./models/chat.js"
+import "./models/chatParticipants.js"
+import "./models/message.js"
 
 import jwt from "jsonwebtoken"
 import User from "./services/user.js"
@@ -45,18 +48,21 @@ app.use(searchRouter)
 app.use(settingsRouter)
 app.use(favoriteRouter)
 app.use(messageRouter)
+app.use(chatRouter)
 app.use(errorHandler)
-io.use((socket, next) => {
-  const token = socket.handshake.query.token
-  if (!token) next(new Error("No token provided"))
-  try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
-    socket.userId = decodedToken.userId
-    next()
-  } catch (err) {
-    next(new Error("Unauthenticated"))
-  }
-})
+
+io
+  .use((socket, next) => {
+    const token = socket.handshake.query.token
+    if (!token) next(new Error("No token provided"))
+    try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+      socket.userId = decodedToken.userId
+      next()
+    } catch (err) {
+      next(new Error("Unauthenticated"))
+    }
+  })
   .on("connection", async (socket) => {
     console.log(`connected to user: ${socket.userId} on socketId: ${socket.id}`)
     await User.update(socket.userId, { socketId: socket.id })
