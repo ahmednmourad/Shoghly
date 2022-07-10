@@ -7,6 +7,7 @@ const router = Router()
 
 router
   .post("/messages", isAuth, message.send)
-  .get("/messages", isAuth, message.list)
+  .post("/messages/:messageId/acknowledge-read", isAuth, message.acknowledgeRead)
+  .get("/users/:userId/messages", isAuth, message.list)
 
 export default router

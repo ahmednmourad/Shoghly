@@ -6,6 +6,7 @@ export const Message = sequelize.define("message", {
   messageId: { type: Sequelize.UUID, primaryKey: true },
   senderId: { type: Sequelize.UUID, allowNull: false, references: { model: "user", key: "userId" } },
   receiverId: { type: Sequelize.UUID, allowNull: false, references: { model: "user", key: "userId" } },
+  chatId: { type: Sequelize.STRING },
   text: { type: Sequelize.TEXT },
   attachment: { type: Sequelize.TEXT },
   isRead: { type: Sequelize.BOOLEAN, defaultValue: false }
