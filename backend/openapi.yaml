@@ -3,7 +3,7 @@ info:
     title: Shoghly
     contact:
         email: imohamedelshamy@gmail.com
-    version: 1.0.1
+    version: 1.0.2
 servers:
     - url: http://localhost:8080
     - url: https://cjyzhu7lw2.execute-api.eu-central-1.amazonaws.com/dev
@@ -72,7 +72,7 @@ paths:
                     description: Internal server error
             security:
                 - bearerAuth: [] 
-    
+
     /signin:
         post:
             tags:
@@ -90,7 +90,7 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
-    
+
     /workers/{workerId}:
         get:
             tags:
@@ -132,8 +132,6 @@ paths:
                     description: Bad request
                 "500":
                     description: Internal server error
-            security:
-                - bearerAuth: []
 
     /favorites/workers/{workerId}:
         post:
@@ -188,7 +186,7 @@ paths:
                     description: Internal server error
             security:
                 - bearerAuth: []
-    
+
     /chats:
         get:
             tags:
@@ -408,8 +406,6 @@ paths:
             summary: Get Worker projects
             tags:
               - Project
-            security:
-                - bearerAuth: []
             parameters:
                 - in: path
                   name: workerId
@@ -430,8 +426,6 @@ paths:
             summary: Get a Project
             tags:
                 - Project
-            security:
-                - bearerAuth: []
             parameters:
                 - in: path
                   name: projectId
@@ -526,8 +520,6 @@ paths:
             summary: get all worker reviews
             tags:
                 - Review
-            security:
-                - bearerAuth: []
             parameters:
                 - in: path
                   name: workerId
@@ -597,8 +589,6 @@ paths:
             summary: Auto Complete Search for workers
             tags:
               - Search
-            security:
-                - bearerAuth: []
             parameters:
               - in: query
                 name: text
@@ -624,8 +614,6 @@ paths:
             summary: Search Results for workers
             tags:
               - Search
-            security:
-                - bearerAuth: []
             parameters:
               - in: query
                 name: text
@@ -637,6 +625,10 @@ paths:
                 schema: 
                     type: string
                 required: true
+              - name: profession
+                in: path
+                schema:
+                    type: string
             responses:
                 "200":
                     description: good
