@@ -10,7 +10,7 @@ export const create = async (clientId, workerId) => {
 }
 
 export const list = async (clientId) => {
-  return await sequelize.query("SELECT favorite.createdAt, JSON_OBJECT('firstName',firstName,'lastName', lastName, 'picture', picture, 'gender', gender, 'profession', profession, 'averageRating', (SELECT AVG(rating) FROM review WHERE review.workerId = user.userId)) AS worker FROM favorite INNER JOIN user ON user.userId = favorite.workerId WHERE clientId = ?",
+  return await sequelize.query("SELECT favorite.createdAt, JSON_OBJECT('id',user.userId, 'firstName',firstName,'lastName', lastName, 'picture', picture, 'gender', gender, 'profession', profession, 'averageRating', (SELECT AVG(rating) FROM review WHERE review.workerId = user.userId)) AS worker FROM favorite INNER JOIN user ON user.userId = favorite.workerId WHERE clientId = ?",
     { type: sequelize.QueryTypes.SELECT, raw: true, replacements: [clientId] }
   )
 }

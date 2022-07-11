@@ -30,7 +30,6 @@ import "./models/message.js"
 
 import jwt from "jsonwebtoken"
 import User from "./services/user.js"
-logger.info("Hello Mother fuckers")
 
 const app = express()
 const server = http.createServer(app)
