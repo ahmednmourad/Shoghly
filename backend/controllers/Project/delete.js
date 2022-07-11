@@ -9,7 +9,7 @@ export default async (req, res, next) => {
   try {
     await Project.remove(projectId, workerId)
 
-    console.log("Project deleted")
+    logger.info("Project deleted")
     return res.status(200).json({ message: "Project deleted" })
   } catch (err) {
     next(err)

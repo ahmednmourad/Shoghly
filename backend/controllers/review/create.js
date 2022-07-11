@@ -13,7 +13,7 @@ export default async (req, res, next) => {
 
   try {
     const user = await User.getById(workerId)
-    console.log(user)
+    logger.info(user)
     if (user.role !== "worker") throw new CustomError(403, "Permission denied")
 
     await Review.create(review)

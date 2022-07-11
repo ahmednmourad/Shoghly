@@ -14,7 +14,7 @@ export default (req, res, next) => {
     req.role = decodedToken.role
     req.email = decodedToken.email
   } catch (err) {
-    console.log(err.stack)
+    logger.info(err.stack)
     return res.status(500).json({ message: "Something went wrong" })
   }
 

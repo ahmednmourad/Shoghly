@@ -1,6 +1,6 @@
 import { CustomError } from "../utils/error.js"
 export default (req, res) => {
-  console.log(req.files)
+  logger.info(req.files)
   const data = req.files.map((file) => {
     return {
       name: file.originalname,

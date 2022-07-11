@@ -5,7 +5,7 @@ import { CustomError } from "../../utils/error.js"
 import sendEmail from "../../utils/sendEmail.js"
 
 export default async (req, res, next) => {
-  console.log(req.body)
+  logger.info(req.body)
   const { firstName, lastName, email, country, city, password, phone, picture, line, role, profession, gender } = req.body
 
   try {
@@ -32,7 +32,7 @@ export default async (req, res, next) => {
       emailCodeExpire
     }
     await User.create(user)
-    console.log(`User ${user.userId} created successfully`)
+    logger.info(`User ${user.userId} created successfully`)
 
     const html = `<h1>Your Verification Code</h1>
     <h4>Enter this verification code:</h4>
@@ -42,7 +42,7 @@ export default async (req, res, next) => {
     try {
       await sendEmail(email, "Shoghly Email Verification", html)
     } catch (err) {
-      console.log("Failed to send email", err)
+      logger.info("Failed to send email", err)
     }
     return res.status(201).json({ message: "User created", id: user.userId })
   } catch (err) {

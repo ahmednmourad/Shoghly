@@ -6,7 +6,7 @@ import sequelize from "../../utils/sequelize.js"
 export default async (req, res, next) => {
   const workerId = req.userId
   const projectId = req.params.projectId
-  console.log("workerId", workerId, "workerId", projectId)
+  logger.info("workerId", workerId, "workerId", projectId)
   const { description, urls } = req.body
 
   const project = { description }
@@ -16,19 +16,19 @@ export default async (req, res, next) => {
     transaction = await sequelize.transaction()
 
     const photosPayload = getPhotosPayload(urls, projectId)
-    console.log(photosPayload)
+    logger.info(photosPayload)
 
     await Project.isWorkerProject(projectId, workerId)
 
-    console.log("updating project")
+    logger.info("updating project")
     await Project.update(projectId, workerId, project)
-    console.log("Project updated")
+    logger.info("Project updated")
 
-    console.log("Deleting photos")
+    logger.info("Deleting photos")
     await Project.deletePhotos(projectId, urls)
-    console.log("Photos deleted")
+    logger.info("Photos deleted")
 
-    console.log("adding photos")
+    logger.info("adding photos")
     await Project.addPhotos(photosPayload)
 
     await transaction.commit()

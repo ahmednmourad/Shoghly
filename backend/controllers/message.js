@@ -9,7 +9,7 @@ const send = async (req, res, next) => {
   const { receiverId, text, attachment } = req.body
 
   const chatId = generateChatId(senderId, receiverId)
-  console.log("ChatID", chatId)
+  logger.info("ChatID", chatId)
 
   let transaction
 
@@ -35,7 +35,7 @@ const send = async (req, res, next) => {
     const socketId = await User.getSocketId(receiverId)
 
     if (socketId) {
-      console.log(`Sending message to active user on socketId: ${socketId}`)
+      logger.info(`Sending message to active user on socketId: ${socketId}`)
       req.app.io.to(socketId).emit("message", message) // missing createdAt!
     }
 

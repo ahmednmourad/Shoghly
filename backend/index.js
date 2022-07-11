@@ -1,6 +1,7 @@
 import express from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
+import "./utils/logger.js"
 import "./config.js"
 import sequelize from "./utils/sequelize.js"
 import http from "http"
@@ -29,6 +30,7 @@ import "./models/message.js"
 
 import jwt from "jsonwebtoken"
 import User from "./services/user.js"
+logger.info("Hello Mother fuckers")
 
 const app = express()
 const server = http.createServer(app)
@@ -64,24 +66,24 @@ io
     }
   })
   .on("connection", async (socket) => {
-    console.log(`connected to user: ${socket.userId} on socketId: ${socket.id}`)
+    logger.info(`connected to user: ${socket.userId} on socketId: ${socket.id}`)
     await User.update(socket.userId, { socketId: socket.id })
 
     // listen for message from user
     socket.on("message", (message) => {
-      console.log("message", message)
+      logger.info("message", message)
     })
 
     // when server disconnects from user
     socket.on("disconnect", async () => {
       // UPDATE user SET socketId = NULL WHERE userId = socket.userId
-      console.log(`disconnected from user: ${socket.userId}`)
+      logger.info(`disconnected from user: ${socket.userId}`)
       await User.update(socket.userId, { socketId: null })
     })
   })
 
 sequelize.sync()
-  .then(() => console.log(`${process.env.NODE_ENV} Database is ready`))
-  .catch(err => console.error("Database server is broken", err))
+  .then(() => logger.info(`${process.env.NODE_ENV} Database is ready`))
+  .catch(err => logger.error("Database server is broken", err))
 
-server.listen(8080, () => { console.log("Listening to port 8080.") })
+server.listen(8080, () => { logger.info("Listening to port 8080.") })

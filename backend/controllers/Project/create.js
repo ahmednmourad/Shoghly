@@ -15,15 +15,15 @@ export default async (req, res, next) => {
   try {
     transaction = await sequelize.transaction()
 
-    console.log("Creating project")
+    logger.info("Creating project")
     await Project.create(project)
-    console.log(`Success, project created. ProjectID: ${projectId}`)
+    logger.info(`Success, project created. ProjectID: ${projectId}`)
 
     const photosPayload = getPhotosPayload(urls, projectId)
-    console.log(photosPayload)
-    console.log("Adding project photos")
+    logger.info(photosPayload)
+    logger.info("Adding project photos")
     await Project.addPhotos(photosPayload)
-    console.log("Success, Project photos added.")
+    logger.info("Success, Project photos added.")
 
     await transaction.commit()
 

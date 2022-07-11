@@ -26,7 +26,7 @@ export const getById = async (id) => {
         exclude: ["workerId", "clientId"]
       },
       where: { workerId: id },
-      logging: console.log
+      logging: logger.info
     })
     // Count & Average would change to a query if we had pagination in place
     const reviewsCount = reviews.length
@@ -40,7 +40,7 @@ export const getSocketId = async (id) => {
   const user = await User.findByPk(id, { attributes: ["socketId"], raw: true })
   if (!user) throw new CustomError(404, "User not found")
 
-  console.log("SocketId", user.socketId)
+  logger.info("SocketId", user.socketId)
   return user.socketId
 }
 
@@ -67,7 +67,7 @@ export const update = async (id, user) => {
 }
 
 export const changePassword = async (id, password) => {
-  console.log(id, password)
+  logger.info(id, password)
   const result = await User.update({ password }, { where: { userId: id } })
   if (!result) throw new CustomError("User not found")
 }

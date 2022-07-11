@@ -5,9 +5,9 @@ import ChatParticipant from "../models/chatParticipants.js"
 import sequelize from "../utils/sequelize.js"
 
 const create = async (chat, options) => {
-  console.log("Creating chat")
+  logger.info("Creating chat")
   await Chat.create(chat, options)
-  console.log("Success, chat created.")
+  logger.info("Success, chat created.")
 }
 
 const addParticipants = async (chatId, participants, options) => {
@@ -15,15 +15,15 @@ const addParticipants = async (chatId, participants, options) => {
     return { chatId, userId: participant }
   })
 
-  console.log("Adding chat participants")
+  logger.info("Adding chat participants")
   await ChatParticipant.bulkCreate(payload, options)
-  console.log("chat participants added")
+  logger.info("chat participants added")
 }
 
 const update = async (chatId, chat, options) => {
-  console.log("Updating chat")
+  logger.info("Updating chat")
   await Chat.update(chat, { where: { chatId }, ...options })
-  console.log("Success, chat updated.")
+  logger.info("Success, chat updated.")
 }
 
 const getById = async (chatId) => {

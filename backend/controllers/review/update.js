@@ -11,7 +11,7 @@ export default async (req, res, next) => {
     if (!reviewId) throw new Error("No reviewId provided")
 
     await Review.update(reviewId, clientId, review)
-    console.log(`Review updated successfully. ReviewID: ${reviewId}`)
+    logger.info(`Review updated successfully. ReviewID: ${reviewId}`)
 
     return res.status(200).json({ message: "review edited successfully!" })
   } catch (error) {

@@ -6,9 +6,9 @@ import { CustomError } from "../utils/error.js"
 import sequelize from "../utils/sequelize.js"
 
 const create = async (message, options) => {
-  console.log("Creating message")
+  logger.info("Creating message")
   await Message.create(message, options)
-  console.log("Success, message created.")
+  logger.info("Success, message created.")
 }
 
 const acknowledgeRead = async (receiverId, messageId) => {

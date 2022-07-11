@@ -21,7 +21,7 @@ export const update = async (reviewId, clientId, review) => {
 
 export const remove = async (reviewId, clientId) => {
   const count = await Review.destroy({ where: { reviewId, clientId } })
-  console.log(count)
+  logger.info(count)
   if (count === 0) throw new CustomError(404, "Review not found")
 }
 

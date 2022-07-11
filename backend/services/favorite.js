@@ -2,8 +2,6 @@
 "use strict"
 
 import Favorite from "../models/favorite.js"
-import Review from "../models/review.js"
-import User from "../models/user.js"
 import { CustomError } from "../utils/error.js"
 import sequelize from "../utils/sequelize.js"
 

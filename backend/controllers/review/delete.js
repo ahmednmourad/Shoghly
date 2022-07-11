@@ -6,7 +6,7 @@ export default async (req, res, next) => {
 
   try {
     await Review.remove(reviewId, clientId)
-    console.log(`Review ${reviewId} deleted successfully`)
+    logger.info(`Review ${reviewId} deleted successfully`)
 
     return res.status(200).json({ message: "Review deleted successfully" })
   } catch (err) {

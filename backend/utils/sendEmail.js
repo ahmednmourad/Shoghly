@@ -19,7 +19,7 @@ const sendEmail = async (email, subject, html) => {
     htmlContent: html
   }
   await apiInstance.sendTransacEmail(sendSmtpEmail)
-  console.log(`Email sent to ${email} successfully`)
+  logger.info(`Email sent to ${email} successfully`)
 }
 
 export default sendEmail

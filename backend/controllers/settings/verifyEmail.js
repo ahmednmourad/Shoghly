@@ -13,7 +13,7 @@ export default async (req, res, next) => {
 
     await User.verifyEmail(email)
 
-    console.log(`Email ${email} verified successfully`)
+    logger.info(`Email ${email} verified successfully`)
     return res.status(200).json({ message: "Email verified successfully" })
   } catch (err) {
     next(err)

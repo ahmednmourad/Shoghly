@@ -12,5 +12,6 @@
     },
     "rules": {
         "quotes": [2, "double"]
-    }
+    },
+    "globals": {"logger": true}
 }

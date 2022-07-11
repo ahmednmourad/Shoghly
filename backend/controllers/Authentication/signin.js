@@ -15,7 +15,7 @@ export default async (req, res, next) => {
     if (!isValidPassword) throw new CustomError(400, "incorrect email or password")
 
     const accessToken = jwt.sign({ email, userId: user.userId, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "365d" })
-    console.log("Login successful.", { UserID: user.userId, Role: user.role })
+    logger.info("Login successful.", { UserID: user.userId, Role: user.role })
     return res.status(200).json({ message: "logged in successfully", accessToken, userId: user.userId })
   } catch (err) {
     next(err)

@@ -48,7 +48,7 @@ const deletePhotos = async (projectId, photos) => {
   await sequelize.query("DELETE FROM picture WHERE projectId = ? AND url NOT IN (?)", {
     replacements: [projectId, photos],
     // raw: true,
-    logging: console.log
+    logging: logger.info
   })
 }
 

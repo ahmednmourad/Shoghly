@@ -16,7 +16,7 @@ export default async (req, res, next) => {
     const hashedPassword = await encryptPassword(newPassword)
 
     await User.changePassword(userId, hashedPassword)
-    console.log("Password changed successfully!")
+    logger.info("Password changed successfully!")
     return res.status(200).json({ message: "password changed successfully" })
   } catch (err) {
     next(err)
