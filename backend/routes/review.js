@@ -11,7 +11,7 @@ const router = Router()
 
 router
   .post("/workers/:workerId/reviews", isAuth, isClient, createReview)
-  .get("/workers/:workerId/reviews", isAuth, listReviews)
+  .get("/workers/:workerId/reviews", listReviews)
   .put("/workers/reviews/:reviewId", isAuth, updateReview)
   .delete("/workers/reviews/:reviewId", isAuth, deleteReview)
 

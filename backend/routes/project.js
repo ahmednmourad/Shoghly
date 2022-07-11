@@ -11,9 +11,9 @@ const router = Router()
 
 router
   .post("/workers/projects", isAuth, createProject)
-  .get("/workers/projects/:projectId", isAuth, getProject)
+  .get("/workers/projects/:projectId", getProject)
   .put("/workers/projects/:projectId", isAuth, editProject)
   .delete("/workers/projects/:projectId", isAuth, deleteProject)
-  .get("/workers/:workerId/projects", isAuth, getProjects)
+  .get("/workers/:workerId/projects", getProjects)
 
 export default router
