@@ -21,7 +21,13 @@ export const getById = async (id) => {
         model: User,
         as: "client",
         attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"],
-        orderBy: [["updatedAt", "desc"]]
+        orderBy: [
+          [
+            { model: Review, as: "client" },
+            "updatedAt",
+            "DESC"
+          ]
+        ]
       },
       attributes: {
         exclude: ["workerId", "clientId"]
