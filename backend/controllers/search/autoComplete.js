@@ -8,9 +8,8 @@ export default async (req, res, next) => {
     if (!text) throw new CustomError(400, "Empty text field")
     if (!city) throw new CustomError(400, "No city Provided")
     const [rows] = await connection.query("SELECT userId, picture, profession, CONCAT(firstName, ' ', lastName) as 'fullName' FROM user WHERE CONCAT(firstName, ' ', lastName) LIKE ? AND role = 'worker' AND city = ? LIMIT 10", ["%" + text + "%", city])
-    const results = rows
-    if (!results[0].userId) throw new CustomError(404, "No workers found")
-    res.status(200).json({ message: "workers found.", results })
+
+    res.status(200).json({ message: "workers found.", results: rows })
   } catch (err) {
     next(err)
   }
