@@ -13,9 +13,9 @@ const Project = sequelize.define("project", {
   //   }
   // },
   description: { type: Sequelize.STRING }
-}
-,
+},
 {
+  timestamps: true,
   indexes: [
     {
       unique: false,
