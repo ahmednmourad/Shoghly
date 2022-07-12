@@ -25,8 +25,7 @@ export const getById = async (id) => {
       attributes: {
         exclude: ["workerId", "clientId"]
       },
-      where: { workerId: id },
-      logging: logger.info
+      where: { workerId: id }
     })
     // Count & Average would change to a query if we had pagination in place
     const reviewsCount = reviews.length
