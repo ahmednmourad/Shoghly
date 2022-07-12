@@ -20,8 +20,8 @@ const Review = sequelize.define("review", {
   ]
 })
 
-User.hasMany(Review, { foreignKey: "clientId" })
-User.hasMany(Review, { foreignKey: "workerId" })
+User.hasMany(Review, { foreignKey: "clientId", onDelete: "CASCADE" })
+User.hasMany(Review, { foreignKey: "workerId", onDelete: "CASCADE" })
 Review.belongsTo(User, { as: "client", foreignKey: "clientId" })
 Review.belongsTo(User, { as: "worker", foreignKey: "workerId" })
 
