@@ -14,8 +14,7 @@ export default async (req, res, next) => {
     LEFT JOIN review ON user.userId = review.workerId 
     WHERE CONCAT(firstName, ' ', lastName) LIKE ? AND role = 'worker' AND city = ? ${profession ? `AND profession = ${connection.escape(profession)}` : ""}`, ["%" + text + "%", city])
 
-    const results = rows
-    res.status(200).json({ message: "success", results })
+    res.status(200).json({ message: "Success", results: rows })
   } catch (err) {
     next(err)
   }

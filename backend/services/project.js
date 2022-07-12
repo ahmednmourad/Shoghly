@@ -14,7 +14,7 @@ const addPhotos = async (photos) => {
 }
 
 const list = async (workerId) => {
-  return await sequelize.query("SELECT projectId id, description, json_array((SELECT url FROM picture where picture.projectId = project.projectId limit 1)) as pictures, createdAt, updatedAt FROM project WHERE workerId = ?", {
+  return await sequelize.query("SELECT projectId id, description, json_array((SELECT url FROM picture where picture.projectId = project.projectId limit 1)) as pictures, createdAt, updatedAt FROM project WHERE workerId = ? ORDER BY updatedAt desc", {
     replacements: [workerId],
     type: sequelize.QueryTypes.SELECT,
     raw: true
@@ -46,9 +46,9 @@ const update = async (projectId, project) => {
 
 const deletePhotos = async (projectId, photos) => {
   await sequelize.query("DELETE FROM picture WHERE projectId = ? AND url NOT IN (?)", {
-    replacements: [projectId, photos],
+    replacements: [projectId, photos]
     // raw: true,
-    
+
   })
 }
 
