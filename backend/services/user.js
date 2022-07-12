@@ -22,17 +22,13 @@ export const getById = async (id) => {
         as: "client",
         attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"]
       },
-      orderBy: [
-        [
-          { model: Review, as: "client" },
-          "updatedAt",
-          "DESC"
-        ]
+      order: [["updatedAt", "DESC"]
       ],
       attributes: {
         exclude: ["workerId", "clientId"]
       },
-      where: { workerId: id }
+      where: { workerId: id },
+      logging: console.log
     })
     // Count & Average would change to a query if we had pagination in place
     const reviewsCount = reviews.length

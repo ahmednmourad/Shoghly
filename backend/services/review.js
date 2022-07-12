@@ -10,7 +10,7 @@ export const create = async (review) => {
 }
 
 export const list = async (workerId) => {
-  const { count, rows } = await Review.findAndCountAll({ include: { model: User, attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"] }, where: { workerId }, orderBy: [["updatedAt", "desc"]] })
+  const { count, rows } = await Review.findAndCountAll({ include: { model: User, attributes: [["userId", "id"], "firstName", "lastName", "picture", "gender"] }, where: { workerId }, order: [["updatedAt", "desc"]] })
   return { reviews: rows, count }
 }
 
