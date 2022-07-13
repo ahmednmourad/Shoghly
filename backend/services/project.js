@@ -23,7 +23,7 @@ const list = async (workerId) => {
 
 const getById = async (id) => {
   const project = await sequelize.query(`
-  SELECT project.projectId as id ,project.description ,project.createdAt, project.updatedAt, json_arrayagg(picture.url) as photos 
+  SELECT project.projectId as id ,project.workerId, project.description ,project.createdAt, project.updatedAt, json_arrayagg(picture.url) as photos 
   FROM project 
   LEFT JOIN picture using(projectId) 
   WHERE projectId = ? group by project.projectId, project.description, project.createdAt, project.updatedAt`, {
