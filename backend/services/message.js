@@ -31,18 +31,13 @@ const list = async (userId, chatId) => {
   return messages
 }
 
-const get = async (userId, messageId) => {
+const get = async (messageId) => {
   const message = await Message.findOne({
-    attributes: ["messageId", "senderId", "receiverId", [sequelize.literal("if(senderId = :userId, true, false)"), "isOwner"], "text", "attachment", "isRead", "createdAt", "updatedAt"],
-    replacements: { userId },
+    attributes: ["messageId", "senderId", "receiverId", "text", "attachment", "isRead", "createdAt", "updatedAt"],
     order: [["createdAt", "desc"]],
-    where: { messageId },
-    raw: true
+    where: { messageId }
   })
-  message.isOwner = !!message.isOwner
-  message.isRead = !!message.isRead
-
-  return message
+  return message.dataValues
 }
 
 export default { create, list, acknowledgeRead, get }
