@@ -17,12 +17,32 @@ const acknowledgeRead = async (receiverId, messageId) => {
 }
 
 const list = async (userId, chatId) => {
-  return await Message.findAll({
+  const messages = await Message.findAll({
     attributes: ["messageId", "senderId", "receiverId", [sequelize.literal("if(senderId = :userId, true, false)"), "isOwner"], "text", "attachment", "isRead", "createdAt", "updatedAt"],
     replacements: { userId },
     order: [["createdAt", "desc"]],
-    where: { chatId }
+    where: { chatId },
+    raw: true
   })
+  messages.forEach(message => {
+    message.isOwner = !!message.isOwner
+    message.isRead = !!message.isRead
+  })
+  return messages
 }
 
-export default { create, list, acknowledgeRead }
+const get = async (userId, messageId) => {
+  const message = await Message.findOne({
+    attributes: ["messageId", "senderId", "receiverId", [sequelize.literal("if(senderId = :userId, true, false)"), "isOwner"], "text", "attachment", "isRead", "createdAt", "updatedAt"],
+    replacements: { userId },
+    order: [["createdAt", "desc"]],
+    where: { messageId },
+    raw: true
+  })
+  message.isOwner = !!message.isOwner
+  message.isRead = !!message.isRead
+
+  return message
+}
+
+export default { create, list, acknowledgeRead, get }

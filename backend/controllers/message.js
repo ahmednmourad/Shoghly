@@ -10,6 +10,7 @@ const send = async (req, res, next) => {
 
   const chatId = generateChatId(senderId, receiverId)
   logger.info("ChatID", chatId)
+  const message = { messageId: uuidv4(), chatId, senderId, receiverId, text, attachment }
 
   let transaction
 
@@ -29,20 +30,25 @@ const send = async (req, res, next) => {
       await Chat.update(chatId, chat, { transaction })
     }
 
-    const message = { messageId: uuidv4(), chatId, senderId, receiverId, text, attachment }
     await Message.create(message, { transaction })
 
+    await transaction.commit()
+  } catch (err) {
+    await transaction.rollback()
+    next(err)
+  }
+
+  try {
     const socketId = await User.getSocketId(receiverId)
 
     if (socketId) {
       logger.info(`Sending message to active user on socketId: ${socketId}`)
-      req.app.io.to(socketId).emit("message", message) // missing createdAt!
+      const result = await Message.get(senderId, message.messageId)
+      req.app.io.to(socketId).emit("message", result) // missing createdAt!
     }
 
-    await transaction.commit()
     return res.status(200).json({ message: "message sent successfully" })
   } catch (err) {
-    await transaction.rollback()
     next(err)
   }
 }
