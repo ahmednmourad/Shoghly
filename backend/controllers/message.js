@@ -39,12 +39,19 @@ const send = async (req, res, next) => {
   }
 
   try {
-    const socketId = await User.getSocketId(receiverId)
+    const senderSocketId = await User.getSocketId(senderId)
+    const receiverSocketId = await User.getSocketId(receiverId)
 
-    if (socketId) {
-      logger.info(`Sending message to active user on socketId: ${socketId}`)
-      const result = await Message.get(senderId, message.messageId)
-      req.app.io.to(socketId).emit("message", result) // missing createdAt!
+    const result = await Message.get(senderId, message.messageId)
+
+    if (senderSocketId) {
+      logger.info(`Sending message to sender on socketId: ${senderSocketId}`)
+      req.app.io.to(senderSocketId).emit("message", result) // missing createdAt!
+    }
+
+    if (receiverSocketId) {
+      logger.info(`Sending message to receiver on socketId: ${receiverSocketId}`)
+      req.app.io.to(receiverSocketId).emit("message", result) // missing createdAt!
     }
 
     return res.status(200).json({ message: "message sent successfully" })
